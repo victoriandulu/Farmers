@@ -48,12 +48,12 @@
       font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 1px;
+      gap: 0.5rem;
     }
 
     .nav-links {
       display: flex;
-      gap: 1px;
+      gap: 1rem;
       flex-wrap: wrap;
     }
 
@@ -186,13 +186,6 @@
     .weather-card h4 {
       color: white !important;
     }
-     .market-card h4 {
-      color: white !important;
-    }
-    .alert-card h4 {
-      color: white !important;
-    }
-
 
     .market-card {
       background: linear-gradient(135deg, var(--orange-accent), #ffb74d);
@@ -393,13 +386,229 @@
       margin-top: 3rem;
     }
 
+    @media (max-width: 992px) {
+      .dashboard-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+      .stats-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+    }
+
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .menu-toggle { display: block; }
-      main { padding: 1rem; }
-      .dashboard-grid { grid-template-columns: 1fr; }
-      .page-header { padding: 1rem; }
-      .page-header h2 { font-size: 1.5rem; }
+      
+      header {
+        padding: 1rem;
+        flex-wrap: wrap;
+      }
+      
+      .brand { font-size: 1.3rem; }
+      
+      main { 
+        padding: 1rem; 
+        margin: 0;
+      }
+      
+      .dashboard-grid { 
+        grid-template-columns: 1fr; 
+        gap: 1rem;
+      }
+      
+      .stats-grid { 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 0.75rem;
+      }
+      
+      .page-header { 
+        padding: 1.5rem 1rem; 
+        margin-bottom: 1rem;
+      }
+      
+      .page-header h2 { 
+        font-size: 1.5rem; 
+        margin-bottom: 0.25rem;
+      }
+      
+      .page-header p { 
+        font-size: 0.9rem; 
+      }
+      
+      .card { 
+        padding: 1rem; 
+        margin-bottom: 1rem;
+      }
+      
+      .card h4 { 
+        font-size: 1.1rem; 
+        margin-bottom: 0.75rem;
+      }
+      
+      .data-table {
+        font-size: 0.85rem;
+        overflow-x: auto;
+        display: block;
+        white-space: nowrap;
+      }
+      
+      .data-table thead, .data-table tbody, .data-table th, .data-table td, .data-table tr {
+        display: block;
+      }
+      
+      .data-table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+      
+      .data-table tbody tr {
+        border: 1px solid var(--gray-light);
+        margin-bottom: 0.5rem;
+        padding: 0.5rem;
+        border-radius: 8px;
+        background: white;
+      }
+      
+      .data-table td {
+        border: none;
+        padding: 0.5rem 0;
+        position: relative;
+        padding-left: 40% !important;
+        white-space: normal;
+      }
+      
+      .data-table td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 6px;
+        width: 35%;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-weight: 600;
+        color: var(--green-primary);
+      }
+      
+      .chat-container { 
+        height: 400px; 
+      }
+      
+      .chat-messages { 
+        padding: 0.75rem; 
+      }
+      
+      .message { 
+        max-width: 95%; 
+        margin: 0.75rem 0;
+        padding: 0.5rem;
+        font-size: 0.9rem;
+      }
+      
+      .chat-input { 
+        padding: 0.75rem; 
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      
+      .chat-input input {
+        margin-bottom: 0.5rem;
+      }
+      
+      .btn { 
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+        width: 100%;
+        justify-content: center;
+        margin: 0.25rem 0;
+      }
+      
+      .input-group {
+        margin: 0.75rem 0;
+      }
+      
+      .input-group label {
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+      }
+      
+      .input-group input, .input-group select, .input-group textarea {
+        padding: 0.6rem;
+        font-size: 0.9rem;
+      }
+      
+      .forum-post {
+        padding: 1rem;
+        margin: 0.75rem 0;
+      }
+      
+      .post-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+        margin-bottom: 0.75rem;
+      }
+      
+      .stat-card {
+        padding: 1rem;
+        min-height: auto;
+      }
+      
+      .stat-number {
+        font-size: 1.5rem;
+      }
+      
+      .progress-bar {
+        height: 15px;
+      }
+      
+      footer {
+        padding: 1rem;
+        font-size: 0.8rem;
+        line-height: 1.4;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .brand { font-size: 1.2rem; }
+      
+      .page-header h2 { font-size: 1.3rem; }
+      
+      .stats-grid { 
+        grid-template-columns: 1fr; 
+      }
+      
+      .card { 
+        padding: 0.875rem; 
+      }
+      
+      .chat-container { 
+        height: 350px; 
+      }
+      
+      .message { 
+        max-width: 100%; 
+        font-size: 0.85rem;
+        padding: 0.5rem;
+      }
+      
+      .data-table td {
+        padding-left: 45% !important;
+      }
+      
+      .data-table td:before {
+        width: 40%;
+        font-size: 0.8rem;
+      }
+      
+      .btn { 
+        padding: 0.75rem;
+        font-size: 0.85rem;
+      }
+      
+      .sidebar {
+        width: 100%;
+        left: -100%;
+      }
+      
+      .sidebar.active {
+        left: 0;
+      }
     }
   </style>
 </head>
@@ -422,7 +631,6 @@
 </header>
 
 <div class="sidebar" id="sidebar">
-    <div class="brand">🌾 FarmersKit</div>
   <div class="close-btn" onclick="toggleSidebar()">✖</div>
   <a href="#" onclick="showSection('dashboard'); toggleSidebar()">🏠 Dashboard</a>
   <a href="#" onclick="showSection('weather'); toggleSidebar()">🌦 Weather</a>
@@ -439,7 +647,7 @@
   <!-- Dashboard Section -->
   <section id="dashboard" class="section active">
     <div class="page-header">
-      <h2>Welcome back, John Doe! 👨🏾‍🌾</h2>
+      <h2>Welcome back, John Mwangi! 👨🏾‍🌾</h2>
       <p>Your smart farming dashboard - Everything you need at a glance</p>
     </div>
 
@@ -505,14 +713,48 @@
     <div class="card">
       <h4>📅 7-Day Forecast</h4>
       <table class="data-table">
-        <tr>
-          <th>Day</th><th>Weather</th><th>High/Low</th><th>Rain</th><th>Farming Advice</th>
-        </tr>
-        <tr><td>Today</td><td>Partly Cloudy</td><td>29°/18°</td><td>0%</td><td>Good day for harvesting</td></tr>
-        <tr><td>Tomorrow</td><td>Light Rain</td><td>26°/16°</td><td>60%</td><td>Postpone spraying</td></tr>
-        <tr><td>Wednesday</td><td>Sunny</td><td>30°/19°</td><td>10%</td><td>Perfect for field work</td></tr>
-        <tr><td>Thursday</td><td>Partly Cloudy</td><td>28°/17°</td><td>20%</td><td>Good planting conditions</td></tr>
-        <tr><td>Friday</td><td>Heavy Rain</td><td>24°/15°</td><td>85%</td><td>Stay indoors, check drainage</td></tr>
+        <thead>
+          <tr>
+            <th>Day</th><th>Weather</th><th>High/Low</th><th>Rain</th><th>Farming Advice</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Day">Today</td>
+            <td data-label="Weather">Partly Cloudy</td>
+            <td data-label="High/Low">29°/18°</td>
+            <td data-label="Rain">0%</td>
+            <td data-label="Farming Advice">Good day for harvesting</td>
+          </tr>
+          <tr>
+            <td data-label="Day">Tomorrow</td>
+            <td data-label="Weather">Light Rain</td>
+            <td data-label="High/Low">26°/16°</td>
+            <td data-label="Rain">60%</td>
+            <td data-label="Farming Advice">Postpone spraying</td>
+          </tr>
+          <tr>
+            <td data-label="Day">Wednesday</td>
+            <td data-label="Weather">Sunny</td>
+            <td data-label="High/Low">30°/19°</td>
+            <td data-label="Rain">10%</td>
+            <td data-label="Farming Advice">Perfect for field work</td>
+          </tr>
+          <tr>
+            <td data-label="Day">Thursday</td>
+            <td data-label="Weather">Partly Cloudy</td>
+            <td data-label="High/Low">28°/17°</td>
+            <td data-label="Rain">20%</td>
+            <td data-label="Farming Advice">Good planting conditions</td>
+          </tr>
+          <tr>
+            <td data-label="Day">Friday</td>
+            <td data-label="Weather">Heavy Rain</td>
+            <td data-label="High/Low">24°/15°</td>
+            <td data-label="Rain">85%</td>
+            <td data-label="Farming Advice">Stay indoors, check drainage</td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </section>
@@ -545,10 +787,35 @@
     <div class="card">
       <h4>🛒 Available Products Near You</h4>
       <table class="data-table">
-        <tr><th>Product</th><th>Price</th><th>Quantity</th><th>Location</th><th>Seller</th><th>Action</th></tr>
-        <tr><td>Fertilizer (DAP)</td><td>KES 4,200/bag</td><td>50 bags</td><td>Kiambu</td><td>AgriSupply Co.</td><td><button class="btn btn-secondary">Contact</button></td></tr>
-        <tr><td>Maize Seeds</td><td>KES 350/kg</td><td>100 kg</td><td>Nakuru</td><td>SeedMaster</td><td><button class="btn btn-secondary">Contact</button></td></tr>
-        <tr><td>Dairy Cow</td><td>KES 85,000</td><td>3 available</td><td>Meru</td><td>KiambuFarms</td><td><button class="btn btn-secondary">Contact</button></td></tr>
+        <thead>
+          <tr><th>Product</th><th>Price</th><th>Quantity</th><th>Location</th><th>Seller</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Product">Fertilizer (DAP)</td>
+            <td data-label="Price">KES 4,200/bag</td>
+            <td data-label="Quantity">50 bags</td>
+            <td data-label="Location">Kiambu</td>
+            <td data-label="Seller">AgriSupply Co.</td>
+            <td data-label="Action"><button class="btn btn-secondary">Contact</button></td>
+          </tr>
+          <tr>
+            <td data-label="Product">Maize Seeds</td>
+            <td data-label="Price">KES 350/kg</td>
+            <td data-label="Quantity">100 kg</td>
+            <td data-label="Location">Nakuru</td>
+            <td data-label="Seller">SeedMaster</td>
+            <td data-label="Action"><button class="btn btn-secondary">Contact</button></td>
+          </tr>
+          <tr>
+            <td data-label="Product">Dairy Cow</td>
+            <td data-label="Price">KES 85,000</td>
+            <td data-label="Quantity">3 available</td>
+            <td data-label="Location">Meru</td>
+            <td data-label="Seller">KiambuFarms</td>
+            <td data-label="Action"><button class="btn btn-secondary">Contact</button></td>
+          </tr>
+        </tbody>
       </table>
     </div>
 
@@ -593,12 +860,51 @@
     <div class="card">
       <h4>🗓 Monthly Calendar - August 2025</h4>
       <table class="data-table">
-        <tr><th>Date</th><th>Crop</th><th>Activity</th><th>Field</th><th>Status</th><th>Action</th></tr>
-        <tr><td>Aug 1</td><td>Maize</td><td>Apply NPK Fertilizer</td><td>Field A (5 acres)</td><td>Due</td><td><button class="btn">Mark Done</button></td></tr>
-        <tr><td>Aug 3</td><td>Tomatoes</td><td>Weeding & Pruning</td><td>Greenhouse 1</td><td>Due</td><td><button class="btn">Mark Done</button></td></tr>
-        <tr><td>Aug 5</td><td>Tomatoes</td><td>First Harvest</td><td>Greenhouse 1</td><td>Upcoming</td><td><button class="btn btn-secondary">Set Reminder</button></td></tr>
-        <tr><td>Aug 10</td><td>Beans</td><td>First Weeding</td><td>Field C</td><td>Scheduled</td><td><button class="btn btn-secondary">Set Reminder</button></td></tr>
-        <tr><td>Aug 15</td><td>Maize</td><td>Pest Control Spray</td><td>Field A</td><td>Scheduled</td><td><button class="btn btn-secondary">Set Reminder</button></td></tr>
+        <thead>
+          <tr><th>Date</th><th>Crop</th><th>Activity</th><th>Field</th><th>Status</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Date">Aug 1</td>
+            <td data-label="Crop">Maize</td>
+            <td data-label="Activity">Apply NPK Fertilizer</td>
+            <td data-label="Field">Field A (5 acres)</td>
+            <td data-label="Status">Due</td>
+            <td data-label="Action"><button class="btn">Mark Done</button></td>
+          </tr>
+          <tr>
+            <td data-label="Date">Aug 3</td>
+            <td data-label="Crop">Tomatoes</td>
+            <td data-label="Activity">Weeding & Pruning</td>
+            <td data-label="Field">Greenhouse 1</td>
+            <td data-label="Status">Due</td>
+            <td data-label="Action"><button class="btn">Mark Done</button></td>
+          </tr>
+          <tr>
+            <td data-label="Date">Aug 5</td>
+            <td data-label="Crop">Tomatoes</td>
+            <td data-label="Activity">First Harvest</td>
+            <td data-label="Field">Greenhouse 1</td>
+            <td data-label="Status">Upcoming</td>
+            <td data-label="Action"><button class="btn btn-secondary">Set Reminder</button></td>
+          </tr>
+          <tr>
+            <td data-label="Date">Aug 10</td>
+            <td data-label="Crop">Beans</td>
+            <td data-label="Activity">First Weeding</td>
+            <td data-label="Field">Field C</td>
+            <td data-label="Status">Scheduled</td>
+            <td data-label="Action"><button class="btn btn-secondary">Set Reminder</button></td>
+          </tr>
+          <tr>
+            <td data-label="Date">Aug 15</td>
+            <td data-label="Crop">Maize</td>
+            <td data-label="Activity">Pest Control Spray</td>
+            <td data-label="Field">Field A</td>
+            <td data-label="Status">Scheduled</td>
+            <td data-label="Action"><button class="btn btn-secondary">Set Reminder</button></td>
+          </tr>
+        </tbody>
       </table>
     </div>
 
@@ -653,10 +959,35 @@
     <div class="card">
       <h4>🤱 Pregnancy Tracker</h4>
       <table class="data-table">
-        <tr><th>Animal ID</th><th>Breed</th><th>Due Date</th><th>Days Left</th><th>Stage</th><th>Status</th></tr>
-        <tr><td>COW-247</td><td>Friesian</td><td>Sep 15, 2025</td><td>19 days</td><td>Third Trimester</td><td><span style="color: orange;">Monitor</span></td></tr>
-        <tr><td>COW-189</td><td>Ayrshire</td><td>Oct 3, 2025</td><td>37 days</td><td>Third Trimester</td><td><span style="color: green;">Healthy</span></td></tr>
-        <tr><td>COW-301</td><td>Jersey</td><td>Nov 12, 2025</td><td>77 days</td><td>Second Trimester</td><td><span style="color: green;">Healthy</span></td></tr>
+        <thead>
+          <tr><th>Animal ID</th><th>Breed</th><th>Due Date</th><th>Days Left</th><th>Stage</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Animal ID">COW-247</td>
+            <td data-label="Breed">Friesian</td>
+            <td data-label="Due Date">Sep 15, 2025</td>
+            <td data-label="Days Left">19 days</td>
+            <td data-label="Stage">Third Trimester</td>
+            <td data-label="Status"><span style="color: orange;">Monitor</span></td>
+          </tr>
+          <tr>
+            <td data-label="Animal ID">COW-189</td>
+            <td data-label="Breed">Ayrshire</td>
+            <td data-label="Due Date">Oct 3, 2025</td>
+            <td data-label="Days Left">37 days</td>
+            <td data-label="Stage">Third Trimester</td>
+            <td data-label="Status"><span style="color: green;">Healthy</span></td>
+          </tr>
+          <tr>
+            <td data-label="Animal ID">COW-301</td>
+            <td data-label="Breed">Jersey</td>
+            <td data-label="Due Date">Nov 12, 2025</td>
+            <td data-label="Days Left">77 days</td>
+            <td data-label="Stage">Second Trimester</td>
+            <td data-label="Status"><span style="color: green;">Healthy</span></td>
+          </tr>
+        </tbody>
       </table>
     </div>
 
@@ -792,11 +1123,43 @@
     <div class="card">
       <h4>🥼 Available Experts Near You</h4>
       <table class="data-table">
-        <tr><th>Name</th><th>Specialization</th><th>Location</th><th>Rating</th><th>Availability</th><th>Contact</th></tr>
-        <tr><td>Dr. Sarah Wanjiku</td><td>Veterinarian</td><td>Kiambu (5km)</td><td>⭐⭐⭐⭐⭐</td><td>Available Today</td><td><button class="btn">Call Now</button></td></tr>
-        <tr><td>John Kamau</td><td>Crop Specialist</td><td>Nairobi (12km)</td><td>⭐⭐⭐⭐⭐</td><td>Available Tomorrow</td><td><button class="btn">Book Visit</button></td></tr>
-        <tr><td>Dr. Michael Ochieng</td><td>Soil Expert</td><td>Nakuru (45km)</td><td>⭐⭐⭐⭐</td><td>Available This Week</td><td><button class="btn">Schedule</button></td></tr>
-        <tr><td>Grace Muthoni</td><td>Agricultural Officer</td><td>Kiambu (8km)</td><td>⭐⭐⭐⭐⭐</td><td>Available Today</td><td><button class="btn">Call Now</button></td></tr>
+        <thead>
+          <tr><th>Name</th><th>Specialization</th><th>Location</th><th>Rating</th><th>Availability</th><th>Contact</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Name">Dr. Sarah Wanjiku</td>
+            <td data-label="Specialization">Veterinarian</td>
+            <td data-label="Location">Kiambu (5km)</td>
+            <td data-label="Rating">⭐⭐⭐⭐⭐</td>
+            <td data-label="Availability">Available Today</td>
+            <td data-label="Contact"><button class="btn">Call Now</button></td>
+          </tr>
+          <tr>
+            <td data-label="Name">John Kamau</td>
+            <td data-label="Specialization">Crop Specialist</td>
+            <td data-label="Location">Nairobi (12km)</td>
+            <td data-label="Rating">⭐⭐⭐⭐⭐</td>
+            <td data-label="Availability">Available Tomorrow</td>
+            <td data-label="Contact"><button class="btn">Book Visit</button></td>
+          </tr>
+          <tr>
+            <td data-label="Name">Dr. Michael Ochieng</td>
+            <td data-label="Specialization">Soil Expert</td>
+            <td data-label="Location">Nakuru (45km)</td>
+            <td data-label="Rating">⭐⭐⭐⭐</td>
+            <td data-label="Availability">Available This Week</td>
+            <td data-label="Contact"><button class="btn">Schedule</button></td>
+          </tr>
+          <tr>
+            <td data-label="Name">Grace Muthoni</td>
+            <td data-label="Specialization">Agricultural Officer</td>
+            <td data-label="Location">Kiambu (8km)</td>
+            <td data-label="Rating">⭐⭐⭐⭐⭐</td>
+            <td data-label="Availability">Available Today</td>
+            <td data-label="Contact"><button class="btn">Call Now</button></td>
+          </tr>
+        </tbody>
       </table>
     </div>
 
@@ -828,7 +1191,7 @@
 
       <div class="card">
         <h4>🏆 Top Contributors</h4>
-        <p>1. 🥇 Mary Njeri (2,450 pts)<br>2. 🥈 Peter Kiplimo (2,100 pts)<br>3. 🥉 John Doe (850 pts) - You!<br>4. David Ouma (720 pts)</p>
+        <p>1. 🥇 Mary Njeri (2,450 pts)<br>2. 🥈 Peter Kiplimo (2,100 pts)<br>3. 🥉 John Mwangi (850 pts) - You!<br>4. David Ouma (720 pts)</p>
       </div>
 
       <div class="card">
@@ -922,11 +1285,43 @@
     <div class="card">
       <h4>🆕 Latest Funding Opportunities</h4>
       <table class="data-table">
-        <tr><th>Program</th><th>Amount</th><th>Deadline</th><th>Eligibility</th><th>Status</th><th>Action</th></tr>
-        <tr><td>Youth Agribusiness Loan</td><td>Up to KES 500K</td><td>Aug 15, 2025</td><td>18-35 years</td><td>Open</td><td><button class="btn">Apply Now</button></td></tr>
-        <tr><td>Dairy Development Grant</td><td>KES 200K</td><td>Sep 1, 2025</td><td>5+ dairy cows</td><td>Open</td><td><button class="btn">Apply Now</button></td></tr>
-        <tr><td>Climate Smart Agriculture</td><td>KES 150K</td><td>Aug 30, 2025</td><td>All farmers</td><td>Open</td><td><button class="btn">Apply Now</button></td></tr>
-        <tr><td>Women Empowerment Fund</td><td>KES 300K</td><td>Oct 15, 2025</td><td>Women farmers</td><td>Opening Soon</td><td><button class="btn btn-secondary">Get Notified</button></td></tr>
+        <thead>
+          <tr><th>Program</th><th>Amount</th><th>Deadline</th><th>Eligibility</th><th>Status</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Program">Youth Agribusiness Loan</td>
+            <td data-label="Amount">Up to KES 500K</td>
+            <td data-label="Deadline">Aug 15, 2025</td>
+            <td data-label="Eligibility">18-35 years</td>
+            <td data-label="Status">Open</td>
+            <td data-label="Action"><button class="btn">Apply Now</button></td>
+          </tr>
+          <tr>
+            <td data-label="Program">Dairy Development Grant</td>
+            <td data-label="Amount">KES 200K</td>
+            <td data-label="Deadline">Sep 1, 2025</td>
+            <td data-label="Eligibility">5+ dairy cows</td>
+            <td data-label="Status">Open</td>
+            <td data-label="Action"><button class="btn">Apply Now</button></td>
+          </tr>
+          <tr>
+            <td data-label="Program">Climate Smart Agriculture</td>
+            <td data-label="Amount">KES 150K</td>
+            <td data-label="Deadline">Aug 30, 2025</td>
+            <td data-label="Eligibility">All farmers</td>
+            <td data-label="Status">Open</td>
+            <td data-label="Action"><button class="btn">Apply Now</button></td>
+          </tr>
+          <tr>
+            <td data-label="Program">Women Empowerment Fund</td>
+            <td data-label="Amount">KES 300K</td>
+            <td data-label="Deadline">Oct 15, 2025</td>
+            <td data-label="Eligibility">Women farmers</td>
+            <td data-label="Status">Opening Soon</td>
+            <td data-label="Action"><button class="btn btn-secondary">Get Notified</button></td>
+          </tr>
+        </tbody>
       </table>
     </div>
 
@@ -990,8 +1385,8 @@
 </main>
 
 <footer>
-  <p>&copy; 2025 FarmersKit | Empowering Kenyan Farmers Through Smart Technology</p>
-  <p>Contact: info@farmerskit.| Support: +254-700-FARMERS</p>
+  <p>&copy; 2025 Galaxies Coders Ltd - FarmersKit | Empowering Kenyan Farmers Through Smart Technology</p>
+  <p>Contact: info@farmerskit.co.ke | Support: +254-700-FARMERS</p>
 </footer>
 
 <script>
