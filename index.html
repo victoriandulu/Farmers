@@ -48,12 +48,12 @@
       font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 1px;
     }
 
     .nav-links {
       display: flex;
-      gap: 1rem;
+      gap: 1px;
       flex-wrap: wrap;
     }
 
@@ -184,6 +184,14 @@
     }
 
     .weather-card h4 {
+      color: white !important;
+    }
+
+     .market-card h4 {
+      color: white !important;
+    }
+
+     .alert-card h4 {
       color: white !important;
     }
 
@@ -631,6 +639,7 @@
 </header>
 
 <div class="sidebar" id="sidebar">
+    <div class="brand">🌾 FarmersKit</div>
   <div class="close-btn" onclick="toggleSidebar()">✖</div>
   <a href="#" onclick="showSection('dashboard'); toggleSidebar()">🏠 Dashboard</a>
   <a href="#" onclick="showSection('weather'); toggleSidebar()">🌦 Weather</a>
@@ -647,7 +656,7 @@
   <!-- Dashboard Section -->
   <section id="dashboard" class="section active">
     <div class="page-header">
-      <h2>Welcome back, John Mwangi! 👨🏾‍🌾</h2>
+      <h2>Welcome back, John Doe! 👨🏾‍🌾</h2>
       <p>Your smart farming dashboard - Everything you need at a glance</p>
     </div>
 
@@ -1191,7 +1200,7 @@
 
       <div class="card">
         <h4>🏆 Top Contributors</h4>
-        <p>1. 🥇 Mary Njeri (2,450 pts)<br>2. 🥈 Peter Kiplimo (2,100 pts)<br>3. 🥉 John Mwangi (850 pts) - You!<br>4. David Ouma (720 pts)</p>
+        <p>1. 🥇 Mary Njeri (2,450 pts)<br>2. 🥈 Peter Kiplimo (2,100 pts)<br>3. 🥉 John Doe (850 pts) - You!<br>4. David Ouma (720 pts)</p>
       </div>
 
       <div class="card">
@@ -1385,8 +1394,8 @@
 </main>
 
 <footer>
-  <p>&copy; 2025 Galaxies Coders Ltd - FarmersKit | Empowering Kenyan Farmers Through Smart Technology</p>
-  <p>Contact: info@farmerskit.co.ke | Support: +254-700-FARMERS</p>
+  <p>&copy;  FarmersKit | Empowering Kenyan Farmers Through Smart Technology</p>
+  <p>Contact: info@farmerskit | Support: +254-700-FARMERS</p>
 </footer>
 
 <script>
