@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FarmersKit - Smart Farming Platform</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green-primary: #2e7d32;
+      --green-secondary: #4caf50;
+      --green-light: #e8f5e8;
+      --blue-accent: #1976d2;
+      --orange-accent: #ff9800;
+      --red-accent: #f44336;
+      --white: #ffffff;
+      --gray-bg: #f5f7fa;
+      --gray-light: #e0e0e0;
+      --text-dark: #333;
+      --text-muted: #666;
+      --shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--gray-bg);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--green-primary), var(--green-secondary));
+      color: var(--white);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      font-size: 1.5rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--white);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      background: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -250px;
+      height: 100vh;
+      width: 250px;
+      background: var(--green-primary);
+      color: white;
+      padding: 1rem;
+      transition: left 0.3s ease;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .sidebar.active { left: 0; }
+
+    .sidebar .close-btn {
+      text-align: right;
+      font-size: 1.5rem;
+      cursor: pointer;
+      margin-bottom: 1rem;
+    }
+
+    .sidebar a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 0.75rem;
+      margin: 0.25rem 0;
+      border-radius: 6px;
+      transition: background 0.3s ease;
+    }
+
+    .sidebar a:hover { background: rgba(255,255,255,0.1); }
+
+    main {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      min-height: calc(100vh - 200px);
+    }
+
+    .section {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .section.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-header {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .page-header h2 {
+      color: var(--green-primary);
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .card {
+      background: var(--white);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      border-left: 4px solid var(--green-secondary);
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .card h4 {
+      color: var(--green-primary);
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .weather-card {
+      background: linear-gradient(135deg, var(--blue-accent), #42a5f5);
+      color: white;
+      border-left: none;
+    }
+
+    .weather-card h4 {
+      color: white !important;
+    }
+     .market-card h4 {
+      color: white !important;
+    }
+    .alert-card h4 {
+      color: white !important;
+    }
+
+
+    .market-card {
+      background: linear-gradient(135deg, var(--orange-accent), #ffb74d);
+      color: white;
+      border-left: none;
+    }
+
+    .alert-card {
+      background: linear-gradient(135deg, var(--red-accent), #ef5350);
+      color: white;
+      border-left: none;
+    }
+
+    .input-group {
+      margin: 1rem 0;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+
+    .input-group input, .input-group select, .input-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid var(--gray-light);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+
+    .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+      outline: none;
+      border-color: var(--green-secondary);
+    }
+
+    .btn {
+      background: var(--green-secondary);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn:hover {
+      background: var(--green-primary);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: var(--blue-accent);
+    }
+
+    .btn-danger {
+      background: var(--red-accent);
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .data-table th, .data-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--gray-light);
+    }
+
+    .data-table th {
+      background: var(--green-light);
+      color: var(--green-primary);
+      font-weight: 600;
+    }
+
+    .data-table tr:hover {
+      background: var(--gray-bg);
+    }
+
+    .chat-container {
+      background: white;
+      border-radius: 12px;
+      height: 500px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow);
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      border-bottom: 1px solid var(--gray-light);
+    }
+
+    .message {
+      margin: 0.5rem 0;
+      padding: 0.75rem;
+      border-radius: 12px;
+      max-width: 80%;
+    }
+
+    .user-message {
+      background: var(--green-light);
+      margin-left: auto;
+      text-align: right;
+    }
+
+    .bot-message {
+      background: var(--gray-light);
+    }
+
+    .chat-input {
+      display: flex;
+      padding: 1rem;
+      gap: 0.5rem;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 0.75rem;
+      border: 1px solid var(--gray-light);
+      border-radius: 25px;
+      outline: none;
+    }
+
+    .progress-bar {
+      background: var(--gray-light);
+      border-radius: 10px;
+      overflow: hidden;
+      height: 20px;
+      margin: 0.5rem 0;
+    }
+
+    .progress-fill {
+      background: linear-gradient(90deg, var(--green-secondary), var(--green-primary));
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--green-primary);
+    }
+
+    .forum-post {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+      box-shadow: var(--shadow);
+      border-left: 4px solid var(--green-secondary);
+    }
+
+    .post-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    footer {
+      background: var(--green-primary);
+      color: white;
+      text-align: center;
+      padding: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .menu-toggle { display: block; }
+      main { padding: 1rem; }
+      .dashboard-grid { grid-template-columns: 1fr; }
+      .page-header { padding: 1rem; }
+      .page-header h2 { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">🌾 FarmersKit</div>
+  <nav class="nav-links">
+    <a href="#" onclick="showSection('dashboard')" class="active">Dashboard</a>
+    <a href="#" onclick="showSection('weather')">Weather</a>
+    <a href="#" onclick="showSection('market')">Market</a>
+    <a href="#" onclick="showSection('calendar')">Crop Calendar</a>
+    <a href="#" onclick="showSection('livestock')">Livestock</a>
+    <a href="#" onclick="showSection('chatbot')">AI Assistant</a>
+    <a href="#" onclick="showSection('experts')">Experts</a>
+    <a href="#" onclick="showSection('forums')">Forums</a>
+    <a href="#" onclick="showSection('funding')">Funding</a>
+  </nav>
+  <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
+</header>
+
+<div class="sidebar" id="sidebar">
+    <div class="brand">🌾 FarmersKit</div>
+  <div class="close-btn" onclick="toggleSidebar()">✖</div>
+  <a href="#" onclick="showSection('dashboard'); toggleSidebar()">🏠 Dashboard</a>
+  <a href="#" onclick="showSection('weather'); toggleSidebar()">🌦 Weather</a>
+  <a href="#" onclick="showSection('market'); toggleSidebar()">💰 Market</a>
+  <a href="#" onclick="showSection('calendar'); toggleSidebar()">📅 Crop Calendar</a>
+  <a href="#" onclick="showSection('livestock'); toggleSidebar()">🐄 Livestock</a>
+  <a href="#" onclick="showSection('chatbot'); toggleSidebar()">🤖 AI Assistant</a>
+  <a href="#" onclick="showSection('experts'); toggleSidebar()">👨‍⚕️ Experts</a>
+  <a href="#" onclick="showSection('forums'); toggleSidebar()">💬 Forums</a>
+  <a href="#" onclick="showSection('funding'); toggleSidebar()">💳 Funding</a>
+</div>
+
+<main>
+  <!-- Dashboard Section -->
+  <section id="dashboard" class="section active">
+    <div class="page-header">
+      <h2>Welcome back, John Doe! 👨🏾‍🌾</h2>
+      <p>Your smart farming dashboard - Everything you need at a glance</p>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="card weather-card">
+        <h4>🌤 Today's Weather</h4>
+        <div style="font-size: 1.5rem; margin: 1rem 0;">27°C</div>
+        <p>Partly Cloudy • Nairobi<br>Humidity: 65% • Wind: 8 km/h<br>💧 Rain expected tomorrow</p>
+      </div>
+
+      <div class="card alert-card">
+        <h4>⚠ Farm Alerts</h4>
+        <p>• Maize fertilizer due in 3 days<br>• Cow #247 due for vaccination<br>• Market prices up 15% this week</p>
+      </div>
+
+      <div class="card market-card">
+        <h4>💰 Quick Market Prices</h4>
+        <p>Maize: KES 45/kg ↗<br>Tomatoes: KES 80/kg ↗<br>Milk: KES 60/L ↘<br>Eggs: KES 18/piece ↗</p>
+      </div>
+
+      <div class="card">
+        <h4>🐄 Livestock Status</h4>
+        <p>Total Animals: 25<br>Pregnant Cows: 3<br>Next Vet Visit: Aug 3<br>Health Score: 95%</p>
+      </div>
+
+      <div class="card">
+        <h4>🌱 Crop Progress</h4>
+        <p>Maize (5 acres): Flowering<br>Tomatoes (2 acres): Harvesting<br>Beans (1 acre): Planted<br>Overall Health: Good</p>
+      </div>
+
+      <div class="card">
+        <h4>📊 This Month</h4>
+        <p>Revenue: KES 125,000<br>Expenses: KES 45,000<br>Profit: KES 80,000<br>ROI: 178%</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Weather Section -->
+  <section id="weather" class="section">
+    <div class="page-header">
+      <h2>🌦 Weather Forecast</h2>
+      <p>Detailed weather information for your farm location</p>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="card weather-card">
+        <h4>Current Conditions</h4>
+        <div style="font-size: 2rem; margin: 1rem 0;">27°C</div>
+        <p>Partly Cloudy<br>Feels like 29°C<br>UV Index: 7 (High)</p>
+      </div>
+
+      <div class="card">
+        <h4>📊 Today's Details</h4>
+        <p>Sunrise: 6:32 AM<br>Sunset: 6:45 PM<br>Humidity: 65%<br>Pressure: 1013 hPa<br>Visibility: 10 km</p>
+      </div>
+
+      <div class="card">
+        <h4>🌧 Precipitation</h4>
+        <p>Today: 0mm<br>Tomorrow: 5mm expected<br>This Week: 15mm total<br>Soil Moisture: Optimal</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h4>📅 7-Day Forecast</h4>
+      <table class="data-table">
+        <tr>
+          <th>Day</th><th>Weather</th><th>High/Low</th><th>Rain</th><th>Farming Advice</th>
+        </tr>
+        <tr><td>Today</td><td>Partly Cloudy</td><td>29°/18°</td><td>0%</td><td>Good day for harvesting</td></tr>
+        <tr><td>Tomorrow</td><td>Light Rain</td><td>26°/16°</td><td>60%</td><td>Postpone spraying</td></tr>
+        <tr><td>Wednesday</td><td>Sunny</td><td>30°/19°</td><td>10%</td><td>Perfect for field work</td></tr>
+        <tr><td>Thursday</td><td>Partly Cloudy</td><td>28°/17°</td><td>20%</td><td>Good planting conditions</td></tr>
+        <tr><td>Friday</td><td>Heavy Rain</td><td>24°/15°</td><td>85%</td><td>Stay indoors, check drainage</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- Market Section -->
+  <section id="market" class="section">
+    <div class="page-header">
+      <h2>💰 Market Hub</h2>
+      <p>Real-time prices, trends, and marketplace</p>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="card market-card">
+        <h4>🔥 Trending Prices</h4>
+        <p>Maize: KES 45/kg ↗ (+12%)<br>Tomatoes: KES 80/kg ↗ (+8%)<br>Milk: KES 60/L ↘ (-3%)<br>Beans: KES 120/kg ↗ (+15%)</p>
+      </div>
+
+      <div class="card">
+        <h4>📈 Price Alerts</h4>
+        <p>• Maize hit your target of KES 45/kg!<br>• Tomato prices rising - sell now<br>• Bean demand high in Nakuru<br>• Milk prices stabilizing</p>
+      </div>
+
+      <div class="card">
+        <h4>🎯 Your Products</h4>
+        <button class="btn" onclick="showSellForm()">+ Sell Products</button>
+        <p style="margin-top: 1rem;">Ready to sell:<br>• 500kg Maize<br>• 200kg Tomatoes<br>• 50L Fresh Milk</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h4>🛒 Available Products Near You</h4>
+      <table class="data-table">
+        <tr><th>Product</th><th>Price</th><th>Quantity</th><th>Location</th><th>Seller</th><th>Action</th></tr>
+        <tr><td>Fertilizer (DAP)</td><td>KES 4,200/bag</td><td>50 bags</td><td>Kiambu</td><td>AgriSupply Co.</td><td><button class="btn btn-secondary">Contact</button></td></tr>
+        <tr><td>Maize Seeds</td><td>KES 350/kg</td><td>100 kg</td><td>Nakuru</td><td>SeedMaster</td><td><button class="btn btn-secondary">Contact</button></td></tr>
+        <tr><td>Dairy Cow</td><td>KES 85,000</td><td>3 available</td><td>Meru</td><td>KiambuFarms</td><td><button class="btn btn-secondary">Contact</button></td></tr>
+      </table>
+    </div>
+
+    <div id="sellForm" style="display: none;" class="card">
+      <h4>📦 Sell Your Products</h4>
+      <div class="input-group">
+        <label>Product Type</label>
+        <select><option>Maize</option><option>Tomatoes</option><option>Milk</option><option>Eggs</option></select>
+      </div>
+      <div class="input-group">
+        <label>Quantity (kg/L)</label>
+        <input type="number" placeholder="Enter quantity">
+      </div>
+      <div class="input-group">
+        <label>Price per unit (KES)</label>
+        <input type="number" placeholder="Enter your price">
+      </div>
+      <button class="btn">List Product</button>
+      <button class="btn btn-danger" onclick="hideSellForm()">Cancel</button>
+    </div>
+  </section>
+
+  <!-- Crop Calendar Section -->
+  <section id="calendar" class="section">
+    <div class="page-header">
+      <h2>📅 Smart Crop Calendar</h2>
+      <p>Never miss important farming activities</p>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="card alert-card">
+        <h4>🚨 Urgent Tasks (Next 7 Days)</h4>
+        <p>• Aug 1: Apply fertilizer to Maize (Field A)<br>• Aug 3: Weed Tomato field<br>• Aug 5: Harvest early tomatoes<br>• Aug 7: Plant beans (Field C)</p>
+      </div>
+
+      <div class="card">
+        <h4>📊 Current Crop Status</h4>
+        <p>Maize: Day 85 (Flowering)<br>Tomatoes: Day 120 (Harvest Ready)<br>Beans: Day 15 (Germination)<br>Kale: Day 45 (Growing)</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h4>🗓 Monthly Calendar - August 2025</h4>
+      <table class="data-table">
+        <tr><th>Date</th><th>Crop</th><th>Activity</th><th>Field</th><th>Status</th><th>Action</th></tr>
+        <tr><td>Aug 1</td><td>Maize</td><td>Apply NPK Fertilizer</td><td>Field A (5 acres)</td><td>Due</td><td><button class="btn">Mark Done</button></td></tr>
+        <tr><td>Aug 3</td><td>Tomatoes</td><td>Weeding & Pruning</td><td>Greenhouse 1</td><td>Due</td><td><button class="btn">Mark Done</button></td></tr>
+        <tr><td>Aug 5</td><td>Tomatoes</td><td>First Harvest</td><td>Greenhouse 1</td><td>Upcoming</td><td><button class="btn btn-secondary">Set Reminder</button></td></tr>
+        <tr><td>Aug 10</td><td>Beans</td><td>First Weeding</td><td>Field C</td><td>Scheduled</td><td><button class="btn btn-secondary">Set Reminder</button></td></tr>
+        <tr><td>Aug 15</td><td>Maize</td><td>Pest Control Spray</td><td>Field A</td><td>Scheduled</td><td><button class="btn btn-secondary">Set Reminder</button></td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h4>➕ Add New Crop Activity</h4>
+      <div class="input-group">
+        <label>Crop Type</label>
+        <select><option>Maize</option><option>Tomatoes</option><option>Beans</option><option>Kale</option><option>Other</option></select>
+      </div>
+      <div class="input-group">
+        <label>Activity</label>
+        <select><option>Planting</option><option>Fertilizing</option><option>Weeding</option><option>Spraying</option><option>Harvesting</option></select>
+      </div>
+      <div class="input-group">
+        <label>Date</label>
+        <input type="date">
+      </div>
+      <div class="input-group">
+        <label>Field/Location</label>
+        <input type="text" placeholder="e.g., Field A, Greenhouse 1">
+      </div>
+      <button class="btn">Add Activity</button>
+    </div>
+  </section>
+
+  <!-- Livestock Section -->
+  <section id="livestock" class="section">
+    <div class="page-header">
+      <h2>🐄 Livestock Management</h2>
+      <p>Track your animals' health, breeding, and productivity</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number">25</div>
+        <p>Total Animals</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">3</div>
+        <p>Pregnant Cows</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">95%</div>
+        <p>Health Score</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">450L</div>
+        <p>Daily Milk</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h4>🤱 Pregnancy Tracker</h4>
+      <table class="data-table">
+        <tr><th>Animal ID</th><th>Breed</th><th>Due Date</th><th>Days Left</th><th>Stage</th><th>Status</th></tr>
+        <tr><td>COW-247</td><td>Friesian</td><td>Sep 15, 2025</td><td>19 days</td><td>Third Trimester</td><td><span style="color: orange;">Monitor</span></td></tr>
+        <tr><td>COW-189</td><td>Ayrshire</td><td>Oct 3, 2025</td><td>37 days</td><td>Third Trimester</td><td><span style="color: green;">Healthy</span></td></tr>
+        <tr><td>COW-301</td><td>Jersey</td><td>Nov 12, 2025</td><td>77 days</td><td>Second Trimester</td><td><span style="color: green;">Healthy</span></td></tr>
+      </table>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="card">
+        <h4>💉 Health & Vaccinations</h4>
+        <p>Next Vaccinations:<br>• COW-247: Deworming (Aug 3)<br>• All Chickens: Newcastle (Aug 10)<br>• COW-189: Vitamin injection (Aug 5)</p>
+        <button class="btn" style="margin-top: 1rem;">Schedule Vet Visit</button>
+      </div>
+
+      <div class="card">
+        <h4>🥛 Milk Production</h4>
+        <p>Today: 450L<br>This Week: 3,150L<br>Monthly Average: 425L/day<br>Top Producer: COW-156 (25L/day)</p>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 85%;"></div>
+        </div>
+        <small>85% of target reached</small>
+      </div>
+
+      <div class="card">
+        <h4>🐣 Poultry Corner</h4>
+        <p>Total Birds: 150<br>Layers: 120 (98% laying)<br>Broilers: 30 (6 weeks old)<br>Daily Eggs: 115</p>
+        <button class="btn btn-secondary">Record Collection</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h4>➕ Add New Animal</h4>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+        <div class="input-group">
+          <label>Animal Type</label>
+          <select><option>Cow</option><option>Goat</option><option>Sheep</option><option>Chicken</option><option>Pig</option></select>
+        </div>
+        <div class="input-group">
+          <label>Breed</label>
+          <input type="text" placeholder="e.g., Friesian">
+        </div>
+        <div class="input-group">
+          <label>Tag/ID Number</label>
+          <input type="text" placeholder="e.g., COW-350">
+        </div>
+        <div class="input-group">
+          <label>Date of Birth</label>
+          <input type="date">
+        </div>
+      </div>
+      <button class="btn">Add Animal</button>
+    </div>
+  </section>
+
+  <!-- AI Chatbot Section -->
+  <section id="chatbot" class="section">
+    <div class="page-header">
+      <h2>🤖 AI Farming Assistant</h2>
+      <p>Get instant answers to your farming questions 24/7</p>
+    </div>
+
+    <div class="chat-container">
+      <div class="chat-messages" id="chatMessages">
+        <div class="message bot-message">
+          <strong>FarmBot:</strong> Hello John! I'm your AI farming assistant. Ask me anything about crops, livestock, weather, or farming techniques. How can I help you today?
+        </div>
+        <div class="message user-message">
+          How do I know when my maize is ready for harvesting?
+        </div>
+        <div class="message bot-message">
+          <strong>FarmBot:</strong> Great question! Your maize is ready when: 1) The husks turn brown and dry, 2) Kernels are hard and dent when pressed, 3) Moisture content is 20-25%, 4) The silks are completely dry. For your Field A maize planted on May 15th, you should start checking in about 2-3 weeks. Would you like me to set a reminder?
+        </div>
+      </div>
+      <div class="chat-input">
+        <input type="text" id="chatInput" placeholder="Ask me anything about farming..." onkeypress="if(event.key==='Enter') sendMessage()">
+        <button class="btn" onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="card">
+        <h4>🔥 Popular Questions</h4>
+        <p style="margin-bottom: 1rem;">Quick answers to common farming questions:</p>
+        <button class="btn btn-secondary" onclick="askQuestion('What fertilizer should I use for maize?')" style="margin: 0.25rem; font-size: 0.9rem;">Maize Fertilizer</button>
+        <button class="btn btn-secondary" onclick="askQuestion('How to treat sick chickens?')" style="margin: 0.25rem; font-size: 0.9rem;">Chicken Health</button>
+        <button class="btn btn-secondary" onclick="askQuestion('Best time to plant tomatoes?')" style="margin: 0.25rem; font-size: 0.9rem;">Tomato Planting</button>
+        <button class="btn btn-secondary" onclick="askQuestion('Signs of cow pregnancy?')" style="margin: 0.25rem; font-size: 0.9rem;">Cow Pregnancy</button>
+      </div>
+
+      <div class="card">
+        <h4>📚 AI Knowledge Areas</h4>
+        <p>• Crop diseases & pest control<br>• Livestock health & breeding<br>• Soil management & fertilizers<br>• Weather-based farming advice<br>• Market timing & prices<br>• Organic farming techniques</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experts Section -->
+  <section id="experts" class="section">
+    <div class="page-header">
+      <h2>👨‍⚕️ Expert Directory</h2>
+      <p>Connect with agricultural professionals in your area</p>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="card">
+        <h4>🔍 Find Experts</h4>
+        <div class="input-group">
+          <label>Expert Type</label>
+          <select>
+            <option>All Experts</option>
+            <option>Veterinarians</option>
+            <option>Crop Specialists</option>
+            <option>Soil Experts</option>
+            <option>Agricultural Officers</option>
+            <option>Equipment Technicians</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>Location</label>
+          <select>
+            <option>Nairobi County</option>
+            <option>Kiambu County</option>
+            <option>Nakuru County</option>
+            <option>Meru County</option>
+          </select>
+        </div>
+        <button class="btn">Search Experts</button>
+      </div>
+
+      <div class="card">
+        <h4>🆘 Emergency Contacts</h4>
+        <p><strong>24/7 Vet Hotline:</strong> +254-700-123-456<br><strong>Crop Disease Alert:</strong> +254-700-789-012<br><strong>Weather Emergency:</strong> +254-700-345-678<br><strong>Market Support:</strong> +254-700-901-234</p>
+        <button class="btn btn-danger">Report Emergency</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h4>🥼 Available Experts Near You</h4>
+      <table class="data-table">
+        <tr><th>Name</th><th>Specialization</th><th>Location</th><th>Rating</th><th>Availability</th><th>Contact</th></tr>
+        <tr><td>Dr. Sarah Wanjiku</td><td>Veterinarian</td><td>Kiambu (5km)</td><td>⭐⭐⭐⭐⭐</td><td>Available Today</td><td><button class="btn">Call Now</button></td></tr>
+        <tr><td>John Kamau</td><td>Crop Specialist</td><td>Nairobi (12km)</td><td>⭐⭐⭐⭐⭐</td><td>Available Tomorrow</td><td><button class="btn">Book Visit</button></td></tr>
+        <tr><td>Dr. Michael Ochieng</td><td>Soil Expert</td><td>Nakuru (45km)</td><td>⭐⭐⭐⭐</td><td>Available This Week</td><td><button class="btn">Schedule</button></td></tr>
+        <tr><td>Grace Muthoni</td><td>Agricultural Officer</td><td>Kiambu (8km)</td><td>⭐⭐⭐⭐⭐</td><td>Available Today</td><td><button class="btn">Call Now</button></td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h4>📅 My Expert Consultations</h4>
+      <div class="forum-post">
+        <div class="post-header">
+          <span><strong>Dr. Sarah Wanjiku</strong> - Veterinarian</span>
+          <span>July 25, 2025</span>
+        </div>
+        <p><strong>Consultation:</strong> Cow pregnancy check for COW-247<br><strong>Outcome:</strong> Healthy pregnancy, due Sept 15th. Recommended vitamin supplements.<br><strong>Follow-up:</strong> Check-up scheduled for Aug 15th</p>
+        <button class="btn btn-secondary">Rate Consultation</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Forums Section -->
+  <section id="forums" class="section">
+    <div class="page-header">
+      <h2>💬 Community Forums</h2>
+      <p>Connect, share knowledge, and learn from fellow farmers</p>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="card">
+        <h4>📊 Forum Stats</h4>
+        <p>Active Members: 2,847<br>Posts This Week: 156<br>Questions Answered: 1,234<br>Your Reputation: 850 points</p>
+      </div>
+
+      <div class="card">
+        <h4>🏆 Top Contributors</h4>
+        <p>1. 🥇 Mary Njeri (2,450 pts)<br>2. 🥈 Peter Kiplimo (2,100 pts)<br>3. 🥉 John Doe (850 pts) - You!<br>4. David Ouma (720 pts)</p>
+      </div>
+
+      <div class="card">
+        <h4>➕ Start New Discussion</h4>
+        <div class="input-group">
+          <label>Category</label>
+          <select>
+            <option>General Farming</option>
+            <option>Crop Management</option>
+            <option>Livestock Care</option>
+            <option>Market Discussion</option>
+            <option>Equipment & Tools</option>
+            <option>Success Stories</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>Title</label>
+          <input type="text" placeholder="What's your question or topic?">
+        </div>
+        <button class="btn">Create Post</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h4>🔥 Trending Discussions</h4>
+      
+      <div class="forum-post">
+        <div class="post-header">
+          <span><strong>Mary Njeri</strong> posted in <em>Crop Management</em></span>
+          <span>2 hours ago • 23 replies</span>
+        </div>
+        <h5>Best organic pesticides for tomato farming?</h5>
+        <p>I'm looking for effective organic alternatives to chemical pesticides for my tomato greenhouse. Has anyone tried neem oil or other natural solutions?</p>
+        <button class="btn btn-secondary">Reply</button>
+        <button class="btn btn-secondary">👍 15</button>
+      </div>
+
+      <div class="forum-post">
+        <div class="post-header">
+          <span><strong>Peter Kiplimo</strong> posted in <em>Livestock Care</em></span>
+          <span>5 hours ago • 18 replies</span>
+        </div>
+        <h5>Increasing milk production during dry season</h5>
+        <p>My cows' milk production has dropped by 30% this dry season. What feeding strategies and supplements work best to maintain production?</p>
+        <button class="btn btn-secondary">Reply</button>
+        <button class="btn btn-secondary">👍 12</button>
+      </div>
+
+      <div class="forum-post">
+        <div class="post-header">
+          <span><strong>Grace Wambui</strong> posted in <em>Success Stories</em></span>
+          <span>1 day ago • 31 replies</span>
+        </div>
+        <h5>From 1 acre to 10 acres in 3 years! 🎉</h5>
+        <p>Sharing my journey from small-scale to commercial farming using smart techniques I learned here. Revenue grew from KES 50K to 800K annually!</p>
+        <button class="btn btn-secondary">Reply</button>
+        <button class="btn btn-secondary">👍 45</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Funding Section -->
+  <section id="funding" class="section">
+    <div class="page-header">
+      <h2>💳 Funding & Grants</h2>
+      <p>Access financial support and growth opportunities</p>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="card">
+        <h4>💰 Available Opportunities</h4>
+        <p>Active Grants: 12<br>Government Programs: 8<br>NGO Funding: 15<br>Microfinance: 25<br>Total Available: KES 2.5M</p>
+      </div>
+
+      <div class="card">
+        <h4>📊 Your Applications</h4>
+        <p>Submitted: 3<br>Under Review: 2<br>Approved: 1<br>Total Received: KES 85,000</p>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 40%;"></div>
+        </div>
+        <small>40% success rate</small>
+      </div>
+
+      <div class="card">
+        <h4>🎯 Recommended for You</h4>
+        <p>Based on your profile:<br>• Youth Agribusiness Fund<br>• Dairy Development Grant<br>• Climate Smart Agriculture<br>• Women in Agriculture</p>
+        <button class="btn">View Recommendations</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h4>🆕 Latest Funding Opportunities</h4>
+      <table class="data-table">
+        <tr><th>Program</th><th>Amount</th><th>Deadline</th><th>Eligibility</th><th>Status</th><th>Action</th></tr>
+        <tr><td>Youth Agribusiness Loan</td><td>Up to KES 500K</td><td>Aug 15, 2025</td><td>18-35 years</td><td>Open</td><td><button class="btn">Apply Now</button></td></tr>
+        <tr><td>Dairy Development Grant</td><td>KES 200K</td><td>Sep 1, 2025</td><td>5+ dairy cows</td><td>Open</td><td><button class="btn">Apply Now</button></td></tr>
+        <tr><td>Climate Smart Agriculture</td><td>KES 150K</td><td>Aug 30, 2025</td><td>All farmers</td><td>Open</td><td><button class="btn">Apply Now</button></td></tr>
+        <tr><td>Women Empowerment Fund</td><td>KES 300K</td><td>Oct 15, 2025</td><td>Women farmers</td><td>Opening Soon</td><td><button class="btn btn-secondary">Get Notified</button></td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h4>📋 Quick Application</h4>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+        <div class="input-group">
+          <label>Funding Type</label>
+          <select>
+            <option>Government Grant</option>
+            <option>NGO Funding</option>
+            <option>Microfinance Loan</option>
+            <option>Equipment Lease</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>Amount Needed (KES)</label>
+          <input type="number" placeholder="e.g., 100000">
+        </div>
+        <div class="input-group">
+          <label>Purpose</label>
+          <select>
+            <option>Equipment Purchase</option>
+            <option>Crop Production</option>
+            <option>Livestock Investment</option>
+            <option>Infrastructure</option>
+            <option>Working Capital</option>
+          </select>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Project Description</label>
+        <textarea placeholder="Describe your farming project and how the funding will be used..." rows="3"></textarea>
+      </div>
+      <button class="btn">Submit Application</button>
+    </div>
+
+    <div class="card">
+      <h4>📈 Financial Planning Tools</h4>
+      <div class="dashboard-grid">
+        <div class="stat-card">
+          <div class="stat-number">KES 125K</div>
+          <p>Monthly Revenue</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">KES 45K</div>
+          <p>Monthly Expenses</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">KES 80K</div>
+          <p>Net Profit</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">178%</div>
+          <p>ROI</p>
+        </div>
+      </div>
+      <button class="btn btn-secondary">Download Financial Report</button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2025 FarmersKit | Empowering Kenyan Farmers Through Smart Technology</p>
+  <p>Contact: info@farmerskit.| Support: +254-700-FARMERS</p>
+</footer>
+
+<script>
+  let currentSection = 'dashboard';
+
+  function showSection(sectionId) {
+    // Hide all sections
+    document.querySelectorAll('.section').forEach(section => {
+      section.classList.remove('active');
+    });
+    
+    // Show selected section
+    document.getElementById(sectionId).classList.add('active');
+    
+    // Update navigation
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.classList.remove('active');
+    });
+    
+    event.target.classList.add('active');
+    currentSection = sectionId;
+  }
+
+  function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('active');
+  }
+
+  function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const messages = document.getElementById('chatMessages');
+    
+    if (input.value.trim()) {
+      // Add user message
+      const userMsg = document.createElement('div');
+      userMsg.className = 'message user-message';
+      userMsg.innerHTML = input.value;
+      messages.appendChild(userMsg);
+      
+      // Simulate bot response
+      setTimeout(() => {
+        const botMsg = document.createElement('div');
+        botMsg.className = 'message bot-message';
+        botMsg.innerHTML = `<strong>FarmBot:</strong> ${getBotResponse(input.value)}`;
+        messages.appendChild(botMsg);
+        messages.scrollTop = messages.scrollHeight;
+      }, 1000);
+      
+      input.value = '';
+      messages.scrollTop = messages.scrollHeight;
+    }
+  }
+
+  function getBotResponse(question) {
+    const responses = {
+      'fertilizer': 'For maize, I recommend DAP (18-46-0) at planting and CAN (26-0-0) for topdressing after 6 weeks. Apply 2 bags of DAP per acre at planting.',
+      'sick': 'For sick chickens, isolate them immediately. Common symptoms include lethargy, reduced appetite, and unusual droppings. Contact Dr. Sarah Wanjiku at +254-700-123-456 for immediate consultation.',
+      'tomato': 'Best time to plant tomatoes in Kenya is during the long rains (March-May) or short rains (October-December). Ensure soil temperature is above 16°C.',
+      'pregnancy': 'Signs of cow pregnancy include: missed heat cycles, increased appetite, udder development, and calm behavior. Confirm with a vet check after 60 days.',
+      'default': 'That\'s a great question! Based on your farm profile, I can provide specific advice. For detailed guidance, I recommend consulting with our expert Dr. Sarah Wanjiku or posting in our community forums where experienced farmers share their knowledge.'
+    };
+    
+    const lowerQuestion = question.toLowerCase();
+    for (let key in responses) {
+      if (lowerQuestion.includes(key)) {
+        return responses[key];
+      }
+    }
+    return responses.default;
+  }
+
+  function askQuestion(question) {
+    document.getElementById('chatInput').value = question;
+    sendMessage();
+  }
+
+  function showSellForm() {
+    document.getElementById('sellForm').style.display = 'block';
+  }
+
+  function hideSellForm() {
+    document.getElementById('sellForm').style.display = 'none';
+  }
+
+  // Initialize dashboard
+  document.addEventListener('DOMContentLoaded', function() {
+    showSection('dashboard');
+  });
+
+  // Auto-update weather and prices (simulation)
+  setInterval(function() {
+    const temp = 25 + Math.floor(Math.random() * 6);
+    const weatherElements = document.querySelectorAll('.weather-card div:nth-child(2)');
+    weatherElements.forEach(el => {
+      if (el.style.fontSize) el.textContent = `${temp}°C`;
+    });
+  }, 30000);
+</script>
+
+</body>
+</html>
