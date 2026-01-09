@@ -4,619 +4,718 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FarmersKit - Smart Farming Platform</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --green-primary: #2e7d32;
-      --green-secondary: #4caf50;
-      --green-light: #e8f5e8;
-      --blue-accent: #1976d2;
-      --orange-accent: #ff9800;
-      --red-accent: #f44336;
-      --white: #ffffff;
-      --gray-bg: #f5f7fa;
-      --gray-light: #e0e0e0;
-      --text-dark: #333;
-      --text-muted: #666;
-      --shadow: 0 4px 12px rgba(0,0,0,0.1);
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #2D5016;
+      --primary-light: #4A7C2E;
+      --primary-dark: #1A3009;
+      --secondary: #D97706;
+      --accent: #F59E0B;
+      --success: #10B981;
+      --warning: #EF4444;
+      --bg: #FAFAF9;
+      --surface: #FFFFFF;
+      --text: #1C1917;
+      --text-muted: #78716C;
+      --border: #E7E5E4;
+      --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
+    }
 
     body {
-      font-family: 'Inter', sans-serif;
-      background: var(--gray-bg);
-      color: var(--text-dark);
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
       line-height: 1.6;
+      overflow-x: hidden;
     }
 
+    /* Header Styles */
     header {
-      background: linear-gradient(135deg, var(--green-primary), var(--green-secondary));
-      color: var(--white);
+      background: var(--surface);
+      border-bottom: 2px solid var(--primary);
       padding: 1rem 2rem;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      box-shadow: var(--shadow);
+      justify-content: space-between;
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 1000;
+      box-shadow: var(--shadow);
     }
 
     .brand {
       font-size: 1.5rem;
-      font-weight: 600;
+      font-weight: 700;
+      color: var(--primary);
       display: flex;
       align-items: center;
-      gap: 1px;
+      gap: 0.5rem;
+      font-family: 'Space Mono', monospace;
     }
 
     .nav-links {
       display: flex;
-      gap: 1px;
-      flex-wrap: wrap;
+      gap: 0.5rem;
+      flex: 1;
+      justify-content: center;
     }
 
     .nav-links a {
-      color: var(--white);
-      text-decoration: none;
       padding: 0.5rem 1rem;
+      color: var(--text-muted);
+      text-decoration: none;
       border-radius: 6px;
-      transition: all 0.3s ease;
       font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
     }
 
-    .nav-links a:hover, .nav-links a.active {
-      background: rgba(255,255,255,0.2);
-      transform: translateY(-2px);
+    .nav-links a:hover {
+      color: var(--primary);
+      background: rgba(45, 80, 22, 0.05);
+    }
+
+    .nav-links a.active {
+      color: var(--primary);
+      background: rgba(45, 80, 22, 0.1);
+    }
+
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40%;
+      height: 2px;
+      background: var(--primary);
     }
 
     .menu-toggle {
       display: none;
       font-size: 1.5rem;
       cursor: pointer;
-      padding: 0.5rem;
+      color: var(--primary);
     }
 
+    /* Sidebar for mobile */
     .sidebar {
       position: fixed;
+      left: -300px;
       top: 0;
-      left: -250px;
+      width: 280px;
       height: 100vh;
-      width: 250px;
-      background: var(--green-primary);
-      color: white;
-      padding: 1rem;
+      background: var(--surface);
+      border-right: 2px solid var(--primary);
+      padding: 2rem 1rem;
       transition: left 0.3s ease;
-      z-index: 1000;
+      z-index: 2000;
       overflow-y: auto;
     }
 
-    .sidebar.active { left: 0; }
+    .sidebar.active {
+      left: 0;
+    }
+
+    .sidebar .brand {
+      margin-bottom: 2rem;
+      font-size: 1.3rem;
+    }
 
     .sidebar .close-btn {
-      text-align: right;
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
       font-size: 1.5rem;
       cursor: pointer;
-      margin-bottom: 1rem;
+      color: var(--primary);
     }
 
     .sidebar a {
-      display: block;
-      color: white;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      color: var(--text);
       text-decoration: none;
-      padding: 0.75rem;
-      margin: 0.25rem 0;
       border-radius: 6px;
-      transition: background 0.3s ease;
+      margin-bottom: 0.25rem;
+      transition: all 0.3s ease;
     }
 
-    .sidebar a:hover { background: rgba(255,255,255,0.1); }
+    .sidebar a:hover {
+      background: rgba(45, 80, 22, 0.1);
+      color: var(--primary);
+    }
 
+    /* Main Content */
     main {
-      padding: 2rem;
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
-      min-height: calc(100vh - 200px);
-    }
-
-    .section {
-      display: none;
+      padding: 2rem;
       animation: fadeIn 0.5s ease;
     }
-
-    .section.active { display: block; }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
+    .section {
+      display: none;
+      animation: slideIn 0.4s ease;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
     .page-header {
-      background: var(--white);
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: var(--shadow);
       margin-bottom: 2rem;
-      text-align: center;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--border);
     }
 
     .page-header h2 {
-      color: var(--green-primary);
       font-size: 2rem;
+      color: var(--primary-dark);
       margin-bottom: 0.5rem;
+      font-family: 'Space Mono', monospace;
     }
 
+    .page-header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    /* Grid Layouts */
     .dashboard-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 1.5rem;
-      margin: 2rem 0;
-    }
-
-    .card {
-      background: var(--white);
-      padding: 1.5rem;
-      border-radius: 12px;
-      box-shadow: var(--shadow);
-      transition: all 0.3s ease;
-      border-left: 4px solid var(--green-secondary);
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    }
-
-    .card h4 {
-      color: var(--green-primary);
-      margin-bottom: 1rem;
-      font-size: 1.2rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .weather-card {
-      background: linear-gradient(135deg, var(--blue-accent), #42a5f5);
-      color: white;
-      border-left: none;
-    }
-
-    .weather-card h4 {
-      color: white !important;
-    }
-
-     .market-card h4 {
-      color: white !important;
-    }
-
-     .alert-card h4 {
-      color: white !important;
-    }
-
-    .market-card {
-      background: linear-gradient(135deg, var(--orange-accent), #ffb74d);
-      color: white;
-      border-left: none;
-    }
-
-    .alert-card {
-      background: linear-gradient(135deg, var(--red-accent), #ef5350);
-      color: white;
-      border-left: none;
-    }
-
-    .input-group {
-      margin: 1rem 0;
-    }
-
-    .input-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-      color: var(--text-dark);
-    }
-
-    .input-group input, .input-group select, .input-group textarea {
-      width: 100%;
-      padding: 0.75rem;
-      border: 2px solid var(--gray-light);
-      border-radius: 8px;
-      font-size: 1rem;
-      transition: border-color 0.3s ease;
-    }
-
-    .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
-      outline: none;
-      border-color: var(--green-secondary);
-    }
-
-    .btn {
-      background: var(--green-secondary);
-      color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .btn:hover {
-      background: var(--green-primary);
-      transform: translateY(-2px);
-    }
-
-    .btn-secondary {
-      background: var(--blue-accent);
-    }
-
-    .btn-danger {
-      background: var(--red-accent);
-    }
-
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1rem 0;
-      background: white;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-
-    .data-table th, .data-table td {
-      padding: 1rem;
-      text-align: left;
-      border-bottom: 1px solid var(--gray-light);
-    }
-
-    .data-table th {
-      background: var(--green-light);
-      color: var(--green-primary);
-      font-weight: 600;
-    }
-
-    .data-table tr:hover {
-      background: var(--gray-bg);
-    }
-
-    .chat-container {
-      background: white;
-      border-radius: 12px;
-      height: 500px;
-      display: flex;
-      flex-direction: column;
-      box-shadow: var(--shadow);
-    }
-
-    .chat-messages {
-      flex: 1;
-      padding: 1rem;
-      overflow-y: auto;
-      border-bottom: 1px solid var(--gray-light);
-    }
-
-    .message {
-      margin: 0.5rem 0;
-      padding: 0.75rem;
-      border-radius: 12px;
-      max-width: 80%;
-    }
-
-    .user-message {
-      background: var(--green-light);
-      margin-left: auto;
-      text-align: right;
-    }
-
-    .bot-message {
-      background: var(--gray-light);
-    }
-
-    .chat-input {
-      display: flex;
-      padding: 1rem;
-      gap: 0.5rem;
-    }
-
-    .chat-input input {
-      flex: 1;
-      padding: 0.75rem;
-      border: 1px solid var(--gray-light);
-      border-radius: 25px;
-      outline: none;
-    }
-
-    .progress-bar {
-      background: var(--gray-light);
-      border-radius: 10px;
-      overflow: hidden;
-      height: 20px;
-      margin: 0.5rem 0;
-    }
-
-    .progress-fill {
-      background: linear-gradient(90deg, var(--green-secondary), var(--green-primary));
-      height: 100%;
-      transition: width 0.3s ease;
+      margin-bottom: 1.5rem;
     }
 
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin: 1rem 0;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Card Styles */
+    .card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      border: 1px solid var(--border);
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+
+    .card h4 {
+      color: var(--primary-dark);
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    .weather-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .weather-card h4,
+    .weather-card p {
+      color: white;
+    }
+
+    .alert-card {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+    }
+
+    .alert-card h4,
+    .alert-card p {
+      color: white;
+    }
+
+    .market-card {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      color: white;
+    }
+
+    .market-card h4,
+    .market-card p {
+      color: white;
     }
 
     .stat-card {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 8px;
+      background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+      color: white;
+      border-radius: 12px;
+      padding: 2rem 1.5rem;
       text-align: center;
       box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
     }
 
     .stat-number {
-      font-size: 2rem;
-      font-weight: 600;
-      color: var(--green-primary);
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      font-family: 'Space Mono', monospace;
     }
 
+    .stat-card p {
+      color: rgba(255,255,255,0.9);
+      font-size: 0.95rem;
+    }
+
+    /* Tables */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    .data-table thead {
+      background: var(--primary);
+      color: white;
+    }
+
+    .data-table th,
+    .data-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .data-table tbody tr:hover {
+      background: rgba(45, 80, 22, 0.05);
+    }
+
+    /* Buttons */
+    .btn {
+      background: var(--primary);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+      display: inline-block;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(45, 80, 22, 0.3);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: var(--secondary);
+    }
+
+    .btn-secondary:hover {
+      background: #B45309;
+    }
+
+    .btn-danger {
+      background: var(--warning);
+    }
+
+    .btn-danger:hover {
+      background: #DC2626;
+    }
+
+    .btn-success {
+      background: var(--success);
+    }
+
+    .btn-success:hover {
+      background: #059669;
+    }
+
+    /* Form Elements */
+    .input-group {
+      margin-bottom: 1rem;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .input-group input,
+    .input-group select,
+    .input-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus,
+    .input-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.1);
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(0,0,0,0.1);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 1rem 0 0.5rem 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--success);
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+
+    /* Chat Interface */
+    .chat-container {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+    }
+
+    .chat-messages {
+      height: 400px;
+      overflow-y: auto;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      background: var(--bg);
+      border-radius: 8px;
+    }
+
+    .message {
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border-radius: 8px;
+      animation: messageSlide 0.3s ease;
+    }
+
+    @keyframes messageSlide {
+      from { opacity: 0; transform: translateX(-10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .bot-message {
+      background: var(--primary);
+      color: white;
+      margin-right: 20%;
+    }
+
+    .user-message {
+      background: var(--secondary);
+      color: white;
+      margin-left: 20%;
+      text-align: right;
+    }
+
+    .chat-input {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 0.75rem;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-family: inherit;
+    }
+
+    .chat-input input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    /* Forum Posts */
     .forum-post {
-      background: white;
+      background: var(--bg);
       padding: 1.5rem;
       border-radius: 8px;
-      margin: 1rem 0;
-      box-shadow: var(--shadow);
-      border-left: 4px solid var(--green-secondary);
+      margin-bottom: 1rem;
+      border-left: 4px solid var(--primary);
     }
 
     .post-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-      color: var(--text-muted);
+      margin-bottom: 0.75rem;
       font-size: 0.9rem;
+      color: var(--text-muted);
     }
 
+    .forum-post h5 {
+      color: var(--primary-dark);
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    /* Footer */
     footer {
-      background: var(--green-primary);
+      background: var(--primary-dark);
       color: white;
       text-align: center;
-      padding: 1.5rem;
-      margin-top: 3rem;
+      padding: 2rem;
+      margin-top: 4rem;
     }
 
-    @media (max-width: 992px) {
-      .dashboard-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
-      .stats-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+    footer p {
+      color: rgba(255,255,255,0.9);
+      margin: 0.5rem 0;
     }
 
+    /* Notifications */
+    .notification {
+      position: fixed;
+      top: 100px;
+      right: 2rem;
+      background: var(--surface);
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: var(--shadow-lg);
+      border-left: 4px solid var(--success);
+      z-index: 3000;
+      animation: slideInRight 0.3s ease;
+      max-width: 400px;
+    }
+
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(100px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .notification.error {
+      border-left-color: var(--warning);
+    }
+
+    .notification.warning {
+      border-left-color: var(--secondary);
+    }
+
+    /* Loading Spinner */
+    .spinner {
+      border: 3px solid rgba(0,0,0,0.1);
+      border-left-color: var(--primary);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 2rem auto;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 4000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--surface);
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: modalSlide 0.3s ease;
+    }
+
+    @keyframes modalSlide {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .modal-header h3 {
+      color: var(--primary-dark);
+      font-size: 1.5rem;
+    }
+
+    .modal-close {
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+    }
+
+    .modal-close:hover {
+      color: var(--primary);
+    }
+
+    /* Responsive Design */
     @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .menu-toggle { display: block; }
-      
-      header {
+      .nav-links {
+        display: none;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      main {
         padding: 1rem;
-        flex-wrap: wrap;
       }
-      
-      .brand { font-size: 1.3rem; }
-      
-      main { 
-        padding: 1rem; 
-        margin: 0;
+
+      .dashboard-grid,
+      .stats-grid {
+        grid-template-columns: 1fr;
       }
-      
-      .dashboard-grid { 
-        grid-template-columns: 1fr; 
-        gap: 1rem;
-      }
-      
-      .stats-grid { 
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 0.75rem;
-      }
-      
-      .page-header { 
-        padding: 1.5rem 1rem; 
-        margin-bottom: 1rem;
-      }
-      
-      .page-header h2 { 
-        font-size: 1.5rem; 
-        margin-bottom: 0.25rem;
-      }
-      
-      .page-header p { 
-        font-size: 0.9rem; 
-      }
-      
-      .card { 
-        padding: 1rem; 
-        margin-bottom: 1rem;
-      }
-      
-      .card h4 { 
-        font-size: 1.1rem; 
-        margin-bottom: 0.75rem;
-      }
-      
+
       .data-table {
         font-size: 0.85rem;
-        overflow-x: auto;
+      }
+
+      .data-table thead {
+        display: none;
+      }
+
+      .data-table tr {
         display: block;
-        white-space: nowrap;
-      }
-      
-      .data-table thead, .data-table tbody, .data-table th, .data-table td, .data-table tr {
-        display: block;
-      }
-      
-      .data-table thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-      }
-      
-      .data-table tbody tr {
-        border: 1px solid var(--gray-light);
-        margin-bottom: 0.5rem;
-        padding: 0.5rem;
+        margin-bottom: 1rem;
+        border: 1px solid var(--border);
         border-radius: 8px;
-        background: white;
+        padding: 1rem;
       }
-      
+
       .data-table td {
-        border: none;
+        display: flex;
+        justify-content: space-between;
         padding: 0.5rem 0;
-        position: relative;
-        padding-left: 40% !important;
-        white-space: normal;
+        border: none;
       }
-      
+
       .data-table td:before {
         content: attr(data-label);
-        position: absolute;
-        left: 6px;
-        width: 35%;
-        padding-right: 10px;
-        white-space: nowrap;
         font-weight: 600;
-        color: var(--green-primary);
+        color: var(--primary);
       }
-      
-      .chat-container { 
-        height: 400px; 
+
+      .message {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
       }
-      
-      .chat-messages { 
-        padding: 0.75rem; 
-      }
-      
-      .message { 
-        max-width: 95%; 
-        margin: 0.75rem 0;
-        padding: 0.5rem;
-        font-size: 0.9rem;
-      }
-      
-      .chat-input { 
-        padding: 0.75rem; 
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-      
-      .chat-input input {
-        margin-bottom: 0.5rem;
-      }
-      
-      .btn { 
-        padding: 0.6rem 1rem;
-        font-size: 0.9rem;
-        width: 100%;
-        justify-content: center;
-        margin: 0.25rem 0;
-      }
-      
-      .input-group {
-        margin: 0.75rem 0;
-      }
-      
-      .input-group label {
-        font-size: 0.9rem;
-        margin-bottom: 0.25rem;
-      }
-      
-      .input-group input, .input-group select, .input-group textarea {
-        padding: 0.6rem;
-        font-size: 0.9rem;
-      }
-      
-      .forum-post {
-        padding: 1rem;
-        margin: 0.75rem 0;
-      }
-      
-      .post-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.25rem;
-        margin-bottom: 0.75rem;
-      }
-      
-      .stat-card {
-        padding: 1rem;
-        min-height: auto;
-      }
-      
-      .stat-number {
+
+      .page-header h2 {
         font-size: 1.5rem;
       }
-      
-      .progress-bar {
-        height: 15px;
-      }
-      
-      footer {
-        padding: 1rem;
-        font-size: 0.8rem;
-        line-height: 1.4;
+
+      .stat-number {
+        font-size: 2rem;
       }
     }
 
-    @media (max-width: 480px) {
-      .brand { font-size: 1.2rem; }
-      
-      .page-header h2 { font-size: 1.3rem; }
-      
-      .stats-grid { 
-        grid-template-columns: 1fr; 
-      }
-      
-      .card { 
-        padding: 0.875rem; 
-      }
-      
-      .chat-container { 
-        height: 350px; 
-      }
-      
-      .message { 
-        max-width: 100%; 
-        font-size: 0.85rem;
-        padding: 0.5rem;
-      }
-      
-      .data-table td {
-        padding-left: 45% !important;
-      }
-      
-      .data-table td:before {
-        width: 40%;
-        font-size: 0.8rem;
-      }
-      
-      .btn { 
-        padding: 0.75rem;
-        font-size: 0.85rem;
-      }
-      
-      .sidebar {
-        width: 100%;
-        left: -100%;
-      }
-      
-      .sidebar.active {
-        left: 0;
-      }
+    /* Charts */
+    .chart-container {
+      position: relative;
+      height: 300px;
+      margin: 1rem 0;
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .badge-success {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .badge-warning {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--warning);
+    }
+
+    .badge-info {
+      background: rgba(59, 130, 246, 0.1);
+      color: #3B82F6;
     }
   </style>
 </head>
@@ -628,7 +727,7 @@
     <a href="#" onclick="showSection('dashboard')" class="active">Dashboard</a>
     <a href="#" onclick="showSection('weather')">Weather</a>
     <a href="#" onclick="showSection('market')">Market</a>
-    <a href="#" onclick="showSection('calendar')">Crop Calendar</a>
+    <a href="#" onclick="showSection('calendar')">Calendar</a>
     <a href="#" onclick="showSection('livestock')">Livestock</a>
     <a href="#" onclick="showSection('chatbot')">AI Assistant</a>
     <a href="#" onclick="showSection('experts')">Experts</a>
@@ -639,12 +738,12 @@
 </header>
 
 <div class="sidebar" id="sidebar">
-    <div class="brand">🌾 FarmersKit</div>
+  <div class="brand">🌾 FarmersKit</div>
   <div class="close-btn" onclick="toggleSidebar()">✖</div>
   <a href="#" onclick="showSection('dashboard'); toggleSidebar()">🏠 Dashboard</a>
   <a href="#" onclick="showSection('weather'); toggleSidebar()">🌦 Weather</a>
   <a href="#" onclick="showSection('market'); toggleSidebar()">💰 Market</a>
-  <a href="#" onclick="showSection('calendar'); toggleSidebar()">📅 Crop Calendar</a>
+  <a href="#" onclick="showSection('calendar'); toggleSidebar()">📅 Calendar</a>
   <a href="#" onclick="showSection('livestock'); toggleSidebar()">🐄 Livestock</a>
   <a href="#" onclick="showSection('chatbot'); toggleSidebar()">🤖 AI Assistant</a>
   <a href="#" onclick="showSection('experts'); toggleSidebar()">👨‍⚕️ Experts</a>
@@ -656,40 +755,50 @@
   <!-- Dashboard Section -->
   <section id="dashboard" class="section active">
     <div class="page-header">
-      <h2>Welcome back, John Doe! 👨🏾‍🌾</h2>
+      <h2>Welcome back, <span id="userName">John Doe</span>! 👨🏾‍🌾</h2>
       <p>Your smart farming dashboard - Everything you need at a glance</p>
     </div>
 
     <div class="dashboard-grid">
       <div class="card weather-card">
         <h4>🌤 Today's Weather</h4>
-        <div style="font-size: 1.5rem; margin: 1rem 0;">27°C</div>
-        <p>Partly Cloudy • Nairobi<br>Humidity: 65% • Wind: 8 km/h<br>💧 Rain expected tomorrow</p>
+        <div style="font-size: 1.5rem; margin: 1rem 0;" id="currentTemp">27°C</div>
+        <p id="weatherDetails">Partly Cloudy • Nairobi<br>Humidity: 65% • Wind: 8 km/h<br>💧 Rain expected tomorrow</p>
       </div>
 
       <div class="card alert-card">
         <h4>⚠ Farm Alerts</h4>
-        <p>• Maize fertilizer due in 3 days<br>• Cow #247 due for vaccination<br>• Market prices up 15% this week</p>
+        <div id="farmAlerts">
+          <p>• Maize fertilizer due in 3 days<br>• Cow #247 due for vaccination<br>• Market prices up 15% this week</p>
+        </div>
       </div>
 
       <div class="card market-card">
         <h4>💰 Quick Market Prices</h4>
-        <p>Maize: KES 45/kg ↗<br>Tomatoes: KES 80/kg ↗<br>Milk: KES 60/L ↘<br>Eggs: KES 18/piece ↗</p>
+        <div id="marketPrices">
+          <p>Maize: KES 45/kg ↗<br>Tomatoes: KES 80/kg ↗<br>Milk: KES 60/L ↘<br>Eggs: KES 18/piece ↗</p>
+        </div>
       </div>
 
       <div class="card">
         <h4>🐄 Livestock Status</h4>
-        <p>Total Animals: 25<br>Pregnant Cows: 3<br>Next Vet Visit: Aug 3<br>Health Score: 95%</p>
+        <div id="livestockStatus">
+          <p>Total Animals: <span id="totalAnimals">25</span><br>Pregnant Cows: <span id="pregnantCows">3</span><br>Next Vet Visit: Aug 3<br>Health Score: <span id="healthScore">95</span>%</p>
+        </div>
       </div>
 
       <div class="card">
         <h4>🌱 Crop Progress</h4>
-        <p>Maize (5 acres): Flowering<br>Tomatoes (2 acres): Harvesting<br>Beans (1 acre): Planted<br>Overall Health: Good</p>
+        <div id="cropProgress">
+          <p>Maize (5 acres): Flowering<br>Tomatoes (2 acres): Harvesting<br>Beans (1 acre): Planted<br>Overall Health: Good</p>
+        </div>
       </div>
 
       <div class="card">
         <h4>📊 This Month</h4>
-        <p>Revenue: KES 125,000<br>Expenses: KES 45,000<br>Profit: KES 80,000<br>ROI: 178%</p>
+        <div id="monthlyFinancials">
+          <p>Revenue: KES <span id="monthRevenue">125,000</span><br>Expenses: KES <span id="monthExpenses">45,000</span><br>Profit: KES <span id="monthProfit">80,000</span><br>ROI: <span id="monthROI">178</span>%</p>
+        </div>
       </div>
     </div>
   </section>
@@ -704,65 +813,31 @@
     <div class="dashboard-grid">
       <div class="card weather-card">
         <h4>Current Conditions</h4>
-        <div style="font-size: 2rem; margin: 1rem 0;">27°C</div>
-        <p>Partly Cloudy<br>Feels like 29°C<br>UV Index: 7 (High)</p>
+        <div style="font-size: 2rem; margin: 1rem 0;" id="currentTempDetail">27°C</div>
+        <p>Partly Cloudy<br>Feels like <span id="feelsLike">29</span>°C<br>UV Index: <span id="uvIndex">7</span> (High)</p>
       </div>
 
       <div class="card">
         <h4>📊 Today's Details</h4>
-        <p>Sunrise: 6:32 AM<br>Sunset: 6:45 PM<br>Humidity: 65%<br>Pressure: 1013 hPa<br>Visibility: 10 km</p>
+        <p>Sunrise: <span id="sunrise">6:32 AM</span><br>Sunset: <span id="sunset">6:45 PM</span><br>Humidity: <span id="humidity">65</span>%<br>Pressure: <span id="pressure">1013</span> hPa<br>Visibility: <span id="visibility">10</span> km</p>
       </div>
 
       <div class="card">
         <h4>🌧 Precipitation</h4>
-        <p>Today: 0mm<br>Tomorrow: 5mm expected<br>This Week: 15mm total<br>Soil Moisture: Optimal</p>
+        <p>Today: <span id="precipToday">0</span>mm<br>Tomorrow: <span id="precipTomorrow">5</span>mm expected<br>This Week: <span id="precipWeek">15</span>mm total<br>Soil Moisture: <span id="soilMoisture">Optimal</span></p>
       </div>
     </div>
 
     <div class="card">
       <h4>📅 7-Day Forecast</h4>
-      <table class="data-table">
+      <table class="data-table" id="weatherForecast">
         <thead>
           <tr>
             <th>Day</th><th>Weather</th><th>High/Low</th><th>Rain</th><th>Farming Advice</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td data-label="Day">Today</td>
-            <td data-label="Weather">Partly Cloudy</td>
-            <td data-label="High/Low">29°/18°</td>
-            <td data-label="Rain">0%</td>
-            <td data-label="Farming Advice">Good day for harvesting</td>
-          </tr>
-          <tr>
-            <td data-label="Day">Tomorrow</td>
-            <td data-label="Weather">Light Rain</td>
-            <td data-label="High/Low">26°/16°</td>
-            <td data-label="Rain">60%</td>
-            <td data-label="Farming Advice">Postpone spraying</td>
-          </tr>
-          <tr>
-            <td data-label="Day">Wednesday</td>
-            <td data-label="Weather">Sunny</td>
-            <td data-label="High/Low">30°/19°</td>
-            <td data-label="Rain">10%</td>
-            <td data-label="Farming Advice">Perfect for field work</td>
-          </tr>
-          <tr>
-            <td data-label="Day">Thursday</td>
-            <td data-label="Weather">Partly Cloudy</td>
-            <td data-label="High/Low">28°/17°</td>
-            <td data-label="Rain">20%</td>
-            <td data-label="Farming Advice">Good planting conditions</td>
-          </tr>
-          <tr>
-            <td data-label="Day">Friday</td>
-            <td data-label="Weather">Heavy Rain</td>
-            <td data-label="High/Low">24°/15°</td>
-            <td data-label="Rain">85%</td>
-            <td data-label="Farming Advice">Stay indoors, check drainage</td>
-          </tr>
+        <tbody id="forecastBody">
+          <!-- Dynamic content -->
         </tbody>
       </table>
     </div>
@@ -778,18 +853,24 @@
     <div class="dashboard-grid">
       <div class="card market-card">
         <h4>🔥 Trending Prices</h4>
-        <p>Maize: KES 45/kg ↗ (+12%)<br>Tomatoes: KES 80/kg ↗ (+8%)<br>Milk: KES 60/L ↘ (-3%)<br>Beans: KES 120/kg ↗ (+15%)</p>
+        <div id="trendingPrices">
+          <p>Maize: KES 45/kg ↗ (+12%)<br>Tomatoes: KES 80/kg ↗ (+8%)<br>Milk: KES 60/L ↘ (-3%)<br>Beans: KES 120/kg ↗ (+15%)</p>
+        </div>
       </div>
 
       <div class="card">
         <h4>📈 Price Alerts</h4>
-        <p>• Maize hit your target of KES 45/kg!<br>• Tomato prices rising - sell now<br>• Bean demand high in Nakuru<br>• Milk prices stabilizing</p>
+        <div id="priceAlerts">
+          <p>• Maize hit your target of KES 45/kg!<br>• Tomato prices rising - sell now<br>• Bean demand high in Nakuru<br>• Milk prices stabilizing</p>
+        </div>
       </div>
 
       <div class="card">
         <h4>🎯 Your Products</h4>
-        <button class="btn" onclick="showSellForm()">+ Sell Products</button>
-        <p style="margin-top: 1rem;">Ready to sell:<br>• 500kg Maize<br>• 200kg Tomatoes<br>• 50L Fresh Milk</p>
+        <button class="btn" onclick="openModal('sellModal')">+ Sell Products</button>
+        <div id="userProducts" style="margin-top: 1rem;">
+          <p>Ready to sell:<br>• 500kg Maize<br>• 200kg Tomatoes<br>• 50L Fresh Milk</p>
+        </div>
       </div>
     </div>
 
@@ -799,51 +880,10 @@
         <thead>
           <tr><th>Product</th><th>Price</th><th>Quantity</th><th>Location</th><th>Seller</th><th>Action</th></tr>
         </thead>
-        <tbody>
-          <tr>
-            <td data-label="Product">Fertilizer (DAP)</td>
-            <td data-label="Price">KES 4,200/bag</td>
-            <td data-label="Quantity">50 bags</td>
-            <td data-label="Location">Kiambu</td>
-            <td data-label="Seller">AgriSupply Co.</td>
-            <td data-label="Action"><button class="btn btn-secondary">Contact</button></td>
-          </tr>
-          <tr>
-            <td data-label="Product">Maize Seeds</td>
-            <td data-label="Price">KES 350/kg</td>
-            <td data-label="Quantity">100 kg</td>
-            <td data-label="Location">Nakuru</td>
-            <td data-label="Seller">SeedMaster</td>
-            <td data-label="Action"><button class="btn btn-secondary">Contact</button></td>
-          </tr>
-          <tr>
-            <td data-label="Product">Dairy Cow</td>
-            <td data-label="Price">KES 85,000</td>
-            <td data-label="Quantity">3 available</td>
-            <td data-label="Location">Meru</td>
-            <td data-label="Seller">KiambuFarms</td>
-            <td data-label="Action"><button class="btn btn-secondary">Contact</button></td>
-          </tr>
+        <tbody id="marketProducts">
+          <!-- Dynamic content -->
         </tbody>
       </table>
-    </div>
-
-    <div id="sellForm" style="display: none;" class="card">
-      <h4>📦 Sell Your Products</h4>
-      <div class="input-group">
-        <label>Product Type</label>
-        <select><option>Maize</option><option>Tomatoes</option><option>Milk</option><option>Eggs</option></select>
-      </div>
-      <div class="input-group">
-        <label>Quantity (kg/L)</label>
-        <input type="number" placeholder="Enter quantity">
-      </div>
-      <div class="input-group">
-        <label>Price per unit (KES)</label>
-        <input type="number" placeholder="Enter your price">
-      </div>
-      <button class="btn">List Product</button>
-      <button class="btn btn-danger" onclick="hideSellForm()">Cancel</button>
     </div>
   </section>
 
@@ -857,62 +897,27 @@
     <div class="dashboard-grid">
       <div class="card alert-card">
         <h4>🚨 Urgent Tasks (Next 7 Days)</h4>
-        <p>• Aug 1: Apply fertilizer to Maize (Field A)<br>• Aug 3: Weed Tomato field<br>• Aug 5: Harvest early tomatoes<br>• Aug 7: Plant beans (Field C)</p>
+        <div id="urgentTasks">
+          <p>• Aug 1: Apply fertilizer to Maize (Field A)<br>• Aug 3: Weed Tomato field<br>• Aug 5: Harvest early tomatoes<br>• Aug 7: Plant beans (Field C)</p>
+        </div>
       </div>
 
       <div class="card">
         <h4>📊 Current Crop Status</h4>
-        <p>Maize: Day 85 (Flowering)<br>Tomatoes: Day 120 (Harvest Ready)<br>Beans: Day 15 (Germination)<br>Kale: Day 45 (Growing)</p>
+        <div id="currentCropStatus">
+          <p>Maize: Day 85 (Flowering)<br>Tomatoes: Day 120 (Harvest Ready)<br>Beans: Day 15 (Germination)<br>Kale: Day 45 (Growing)</p>
+        </div>
       </div>
     </div>
 
     <div class="card">
-      <h4>🗓 Monthly Calendar - August 2025</h4>
+      <h4>🗓 Monthly Calendar - <span id="calendarMonth">August 2026</span></h4>
       <table class="data-table">
         <thead>
           <tr><th>Date</th><th>Crop</th><th>Activity</th><th>Field</th><th>Status</th><th>Action</th></tr>
         </thead>
-        <tbody>
-          <tr>
-            <td data-label="Date">Aug 1</td>
-            <td data-label="Crop">Maize</td>
-            <td data-label="Activity">Apply NPK Fertilizer</td>
-            <td data-label="Field">Field A (5 acres)</td>
-            <td data-label="Status">Due</td>
-            <td data-label="Action"><button class="btn">Mark Done</button></td>
-          </tr>
-          <tr>
-            <td data-label="Date">Aug 3</td>
-            <td data-label="Crop">Tomatoes</td>
-            <td data-label="Activity">Weeding & Pruning</td>
-            <td data-label="Field">Greenhouse 1</td>
-            <td data-label="Status">Due</td>
-            <td data-label="Action"><button class="btn">Mark Done</button></td>
-          </tr>
-          <tr>
-            <td data-label="Date">Aug 5</td>
-            <td data-label="Crop">Tomatoes</td>
-            <td data-label="Activity">First Harvest</td>
-            <td data-label="Field">Greenhouse 1</td>
-            <td data-label="Status">Upcoming</td>
-            <td data-label="Action"><button class="btn btn-secondary">Set Reminder</button></td>
-          </tr>
-          <tr>
-            <td data-label="Date">Aug 10</td>
-            <td data-label="Crop">Beans</td>
-            <td data-label="Activity">First Weeding</td>
-            <td data-label="Field">Field C</td>
-            <td data-label="Status">Scheduled</td>
-            <td data-label="Action"><button class="btn btn-secondary">Set Reminder</button></td>
-          </tr>
-          <tr>
-            <td data-label="Date">Aug 15</td>
-            <td data-label="Crop">Maize</td>
-            <td data-label="Activity">Pest Control Spray</td>
-            <td data-label="Field">Field A</td>
-            <td data-label="Status">Scheduled</td>
-            <td data-label="Action"><button class="btn btn-secondary">Set Reminder</button></td>
-          </tr>
+        <tbody id="calendarActivities">
+          <!-- Dynamic content -->
         </tbody>
       </table>
     </div>
@@ -921,21 +926,33 @@
       <h4>➕ Add New Crop Activity</h4>
       <div class="input-group">
         <label>Crop Type</label>
-        <select><option>Maize</option><option>Tomatoes</option><option>Beans</option><option>Kale</option><option>Other</option></select>
+        <select id="newCropType">
+          <option>Maize</option>
+          <option>Tomatoes</option>
+          <option>Beans</option>
+          <option>Kale</option>
+          <option>Other</option>
+        </select>
       </div>
       <div class="input-group">
         <label>Activity</label>
-        <select><option>Planting</option><option>Fertilizing</option><option>Weeding</option><option>Spraying</option><option>Harvesting</option></select>
+        <select id="newActivity">
+          <option>Planting</option>
+          <option>Fertilizing</option>
+          <option>Weeding</option>
+          <option>Spraying</option>
+          <option>Harvesting</option>
+        </select>
       </div>
       <div class="input-group">
         <label>Date</label>
-        <input type="date">
+        <input type="date" id="newActivityDate">
       </div>
       <div class="input-group">
         <label>Field/Location</label>
-        <input type="text" placeholder="e.g., Field A, Greenhouse 1">
+        <input type="text" id="newActivityField" placeholder="e.g., Field A, Greenhouse 1">
       </div>
-      <button class="btn">Add Activity</button>
+      <button class="btn" onclick="addCropActivity()">Add Activity</button>
     </div>
   </section>
 
@@ -948,19 +965,19 @@
 
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-number">25</div>
+        <div class="stat-number" id="statTotalAnimals">25</div>
         <p>Total Animals</p>
       </div>
       <div class="stat-card">
-        <div class="stat-number">3</div>
+        <div class="stat-number" id="statPregnantCows">3</div>
         <p>Pregnant Cows</p>
       </div>
       <div class="stat-card">
-        <div class="stat-number">95%</div>
+        <div class="stat-number" id="statHealthScore">95%</div>
         <p>Health Score</p>
       </div>
       <div class="stat-card">
-        <div class="stat-number">450L</div>
+        <div class="stat-number" id="statDailyMilk">450L</div>
         <p>Daily Milk</p>
       </div>
     </div>
@@ -971,31 +988,8 @@
         <thead>
           <tr><th>Animal ID</th><th>Breed</th><th>Due Date</th><th>Days Left</th><th>Stage</th><th>Status</th></tr>
         </thead>
-        <tbody>
-          <tr>
-            <td data-label="Animal ID">COW-247</td>
-            <td data-label="Breed">Friesian</td>
-            <td data-label="Due Date">Sep 15, 2025</td>
-            <td data-label="Days Left">19 days</td>
-            <td data-label="Stage">Third Trimester</td>
-            <td data-label="Status"><span style="color: orange;">Monitor</span></td>
-          </tr>
-          <tr>
-            <td data-label="Animal ID">COW-189</td>
-            <td data-label="Breed">Ayrshire</td>
-            <td data-label="Due Date">Oct 3, 2025</td>
-            <td data-label="Days Left">37 days</td>
-            <td data-label="Stage">Third Trimester</td>
-            <td data-label="Status"><span style="color: green;">Healthy</span></td>
-          </tr>
-          <tr>
-            <td data-label="Animal ID">COW-301</td>
-            <td data-label="Breed">Jersey</td>
-            <td data-label="Due Date">Nov 12, 2025</td>
-            <td data-label="Days Left">77 days</td>
-            <td data-label="Stage">Second Trimester</td>
-            <td data-label="Status"><span style="color: green;">Healthy</span></td>
-          </tr>
+        <tbody id="pregnancyTracker">
+          <!-- Dynamic content -->
         </tbody>
       </table>
     </div>
@@ -1003,23 +997,29 @@
     <div class="dashboard-grid">
       <div class="card">
         <h4>💉 Health & Vaccinations</h4>
-        <p>Next Vaccinations:<br>• COW-247: Deworming (Aug 3)<br>• All Chickens: Newcastle (Aug 10)<br>• COW-189: Vitamin injection (Aug 5)</p>
-        <button class="btn" style="margin-top: 1rem;">Schedule Vet Visit</button>
+        <div id="healthVaccinations">
+          <p>Next Vaccinations:<br>• COW-247: Deworming (Aug 3)<br>• All Chickens: Newcastle (Aug 10)<br>• COW-189: Vitamin injection (Aug 5)</p>
+        </div>
+        <button class="btn" style="margin-top: 1rem;" onclick="openModal('vetModal')">Schedule Vet Visit</button>
       </div>
 
       <div class="card">
         <h4>🥛 Milk Production</h4>
-        <p>Today: 450L<br>This Week: 3,150L<br>Monthly Average: 425L/day<br>Top Producer: COW-156 (25L/day)</p>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width: 85%;"></div>
+        <div id="milkProduction">
+          <p>Today: <span id="milkToday">450</span>L<br>This Week: <span id="milkWeek">3,150</span>L<br>Monthly Average: <span id="milkAverage">425</span>L/day<br>Top Producer: COW-156 (25L/day)</p>
         </div>
-        <small>85% of target reached</small>
+        <div class="progress-bar">
+          <div class="progress-fill" id="milkProgress" style="width: 85%;"></div>
+        </div>
+        <small><span id="milkProgressPercent">85</span>% of target reached</small>
       </div>
 
       <div class="card">
         <h4>🐣 Poultry Corner</h4>
-        <p>Total Birds: 150<br>Layers: 120 (98% laying)<br>Broilers: 30 (6 weeks old)<br>Daily Eggs: 115</p>
-        <button class="btn btn-secondary">Record Collection</button>
+        <div id="poultryInfo">
+          <p>Total Birds: <span id="totalBirds">150</span><br>Layers: <span id="layerBirds">120</span> (98% laying)<br>Broilers: <span id="broilerBirds">30</span> (6 weeks old)<br>Daily Eggs: <span id="dailyEggs">115</span></p>
+        </div>
+        <button class="btn btn-secondary" onclick="openModal('eggCollectionModal')">Record Collection</button>
       </div>
     </div>
 
@@ -1028,22 +1028,28 @@
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
         <div class="input-group">
           <label>Animal Type</label>
-          <select><option>Cow</option><option>Goat</option><option>Sheep</option><option>Chicken</option><option>Pig</option></select>
+          <select id="newAnimalType">
+            <option>Cow</option>
+            <option>Goat</option>
+            <option>Sheep</option>
+            <option>Chicken</option>
+            <option>Pig</option>
+          </select>
         </div>
         <div class="input-group">
           <label>Breed</label>
-          <input type="text" placeholder="e.g., Friesian">
+          <input type="text" id="newAnimalBreed" placeholder="e.g., Friesian">
         </div>
         <div class="input-group">
           <label>Tag/ID Number</label>
-          <input type="text" placeholder="e.g., COW-350">
+          <input type="text" id="newAnimalID" placeholder="e.g., COW-350">
         </div>
         <div class="input-group">
           <label>Date of Birth</label>
-          <input type="date">
+          <input type="date" id="newAnimalDOB">
         </div>
       </div>
-      <button class="btn">Add Animal</button>
+      <button class="btn" onclick="addNewAnimal()">Add Animal</button>
     </div>
   </section>
 
@@ -1057,13 +1063,7 @@
     <div class="chat-container">
       <div class="chat-messages" id="chatMessages">
         <div class="message bot-message">
-          <strong>FarmBot:</strong> Hello John! I'm your AI farming assistant. Ask me anything about crops, livestock, weather, or farming techniques. How can I help you today?
-        </div>
-        <div class="message user-message">
-          How do I know when my maize is ready for harvesting?
-        </div>
-        <div class="message bot-message">
-          <strong>FarmBot:</strong> Great question! Your maize is ready when: 1) The husks turn brown and dry, 2) Kernels are hard and dent when pressed, 3) Moisture content is 20-25%, 4) The silks are completely dry. For your Field A maize planted on May 15th, you should start checking in about 2-3 weeks. Would you like me to set a reminder?
+          <strong>FarmBot:</strong> Hello <span id="chatUserName">John</span>! I'm your AI farming assistant. Ask me anything about crops, livestock, weather, or farming techniques. How can I help you today?
         </div>
       </div>
       <div class="chat-input">
@@ -1080,11 +1080,13 @@
         <button class="btn btn-secondary" onclick="askQuestion('How to treat sick chickens?')" style="margin: 0.25rem; font-size: 0.9rem;">Chicken Health</button>
         <button class="btn btn-secondary" onclick="askQuestion('Best time to plant tomatoes?')" style="margin: 0.25rem; font-size: 0.9rem;">Tomato Planting</button>
         <button class="btn btn-secondary" onclick="askQuestion('Signs of cow pregnancy?')" style="margin: 0.25rem; font-size: 0.9rem;">Cow Pregnancy</button>
+        <button class="btn btn-secondary" onclick="askQuestion('How to increase milk production?')" style="margin: 0.25rem; font-size: 0.9rem;">Milk Production</button>
+        <button class="btn btn-secondary" onclick="askQuestion('Pest control for tomatoes?')" style="margin: 0.25rem; font-size: 0.9rem;">Pest Control</button>
       </div>
 
       <div class="card">
         <h4>📚 AI Knowledge Areas</h4>
-        <p>• Crop diseases & pest control<br>• Livestock health & breeding<br>• Soil management & fertilizers<br>• Weather-based farming advice<br>• Market timing & prices<br>• Organic farming techniques</p>
+        <p>• Crop diseases & pest control<br>• Livestock health & breeding<br>• Soil management & fertilizers<br>• Weather-based farming advice<br>• Market timing & prices<br>• Organic farming techniques<br>• Irrigation & water management<br>• Greenhouse farming</p>
       </div>
     </div>
   </section>
@@ -1101,7 +1103,7 @@
         <h4>🔍 Find Experts</h4>
         <div class="input-group">
           <label>Expert Type</label>
-          <select>
+          <select id="expertType">
             <option>All Experts</option>
             <option>Veterinarians</option>
             <option>Crop Specialists</option>
@@ -1112,20 +1114,20 @@
         </div>
         <div class="input-group">
           <label>Location</label>
-          <select>
+          <select id="expertLocation">
             <option>Nairobi County</option>
             <option>Kiambu County</option>
             <option>Nakuru County</option>
             <option>Meru County</option>
           </select>
         </div>
-        <button class="btn">Search Experts</button>
+        <button class="btn" onclick="searchExperts()">Search Experts</button>
       </div>
 
       <div class="card">
         <h4>🆘 Emergency Contacts</h4>
-        <p><strong>24/7 Vet Hotline:</strong> +254-700-00<br><strong>Crop Disease Alert:</strong> +254-700-00<br><strong>Weather Emergency:</strong> +254-700-00<br><strong>Market Support:</strong> +254-700-00</p>
-        <button class="btn btn-danger">Report Emergency</button>
+        <p><strong>24/7 Vet Hotline:</strong> +254-700-VETHELP<br><strong>Crop Disease Alert:</strong> +254-700-CROPSOS<br><strong>Weather Emergency:</strong> +254-700-WEATHER<br><strong>Market Support:</strong> +254-700-MARKETS</p>
+        <button class="btn btn-danger" onclick="reportEmergency()">Report Emergency</button>
       </div>
     </div>
 
@@ -1135,52 +1137,23 @@
         <thead>
           <tr><th>Name</th><th>Specialization</th><th>Location</th><th>Rating</th><th>Availability</th><th>Contact</th></tr>
         </thead>
-        <tbody>
-          <tr>
-            <td data-label="Name">Dr. Sarah Wanjiku</td>
-            <td data-label="Specialization">Veterinarian</td>
-            <td data-label="Location">Kiambu (5km)</td>
-            <td data-label="Rating">⭐⭐⭐⭐⭐</td>
-            <td data-label="Availability">Available Today</td>
-            <td data-label="Contact"><button class="btn">Call Now</button></td>
-          </tr>
-          <tr>
-            <td data-label="Name">John Kamau</td>
-            <td data-label="Specialization">Crop Specialist</td>
-            <td data-label="Location">Nairobi (12km)</td>
-            <td data-label="Rating">⭐⭐⭐⭐⭐</td>
-            <td data-label="Availability">Available Tomorrow</td>
-            <td data-label="Contact"><button class="btn">Book Visit</button></td>
-          </tr>
-          <tr>
-            <td data-label="Name">Dr. Michael Ochieng</td>
-            <td data-label="Specialization">Soil Expert</td>
-            <td data-label="Location">Nakuru (45km)</td>
-            <td data-label="Rating">⭐⭐⭐⭐</td>
-            <td data-label="Availability">Available This Week</td>
-            <td data-label="Contact"><button class="btn">Schedule</button></td>
-          </tr>
-          <tr>
-            <td data-label="Name">Grace Muthoni</td>
-            <td data-label="Specialization">Agricultural Officer</td>
-            <td data-label="Location">Kiambu (8km)</td>
-            <td data-label="Rating">⭐⭐⭐⭐⭐</td>
-            <td data-label="Availability">Available Today</td>
-            <td data-label="Contact"><button class="btn">Call Now</button></td>
-          </tr>
+        <tbody id="expertsTable">
+          <!-- Dynamic content -->
         </tbody>
       </table>
     </div>
 
     <div class="card">
       <h4>📅 My Expert Consultations</h4>
-      <div class="forum-post">
-        <div class="post-header">
-          <span><strong>Dr. Sarah Wanjiku</strong> - Veterinarian</span>
-          <span>July 25, 2025</span>
+      <div id="myConsultations">
+        <div class="forum-post">
+          <div class="post-header">
+            <span><strong>Dr. Sarah Wanjiku</strong> - Veterinarian</span>
+            <span>July 25, 2026</span>
+          </div>
+          <p><strong>Consultation:</strong> Cow pregnancy check for COW-247<br><strong>Outcome:</strong> Healthy pregnancy, due Sept 15th. Recommended vitamin supplements.<br><strong>Follow-up:</strong> Check-up scheduled for Aug 15th</p>
+          <button class="btn btn-secondary">Rate Consultation</button>
         </div>
-        <p><strong>Consultation:</strong> Cow pregnancy check for COW-247<br><strong>Outcome:</strong> Healthy pregnancy, due Sept 15th. Recommended vitamin supplements.<br><strong>Follow-up:</strong> Check-up scheduled for Aug 15th</p>
-        <button class="btn btn-secondary">Rate Consultation</button>
       </div>
     </div>
   </section>
@@ -1195,19 +1168,21 @@
     <div class="dashboard-grid">
       <div class="card">
         <h4>📊 Forum Stats</h4>
-        <p>Active Members: 2,847<br>Posts This Week: 156<br>Questions Answered: 1,234<br>Your Reputation: 850 points</p>
+        <p>Active Members: <span id="forumMembers">2,847</span><br>Posts This Week: <span id="forumPostsWeek">156</span><br>Questions Answered: <span id="forumQuestionsAnswered">1,234</span><br>Your Reputation: <span id="userReputation">850</span> points</p>
       </div>
 
       <div class="card">
         <h4>🏆 Top Contributors</h4>
-        <p>1. 🥇 Mary Njeri (2,450 pts)<br>2. 🥈 Peter Kiplimo (2,100 pts)<br>3. 🥉 John Doe (850 pts) - You!<br>4. David Ouma (720 pts)</p>
+        <div id="topContributors">
+          <p>1. 🥇 Mary Njeri (2,450 pts)<br>2. 🥈 Peter Kiplimo (2,100 pts)<br>3. 🥉 John Doe (850 pts) - You!<br>4. David Ouma (720 pts)</p>
+        </div>
       </div>
 
       <div class="card">
         <h4>➕ Start New Discussion</h4>
         <div class="input-group">
           <label>Category</label>
-          <select>
+          <select id="newForumCategory">
             <option>General Farming</option>
             <option>Crop Management</option>
             <option>Livestock Care</option>
@@ -1218,46 +1193,20 @@
         </div>
         <div class="input-group">
           <label>Title</label>
-          <input type="text" placeholder="What's your question or topic?">
+          <input type="text" id="newForumTitle" placeholder="What's your question or topic?">
         </div>
-        <button class="btn">Create Post</button>
+        <div class="input-group">
+          <label>Description</label>
+          <textarea id="newForumDescription" rows="3" placeholder="Provide details about your question or topic..."></textarea>
+        </div>
+        <button class="btn" onclick="createForumPost()">Create Post</button>
       </div>
     </div>
 
     <div class="card">
       <h4>🔥 Trending Discussions</h4>
-      
-      <div class="forum-post">
-        <div class="post-header">
-          <span><strong>Mary Njeri</strong> posted in <em>Crop Management</em></span>
-          <span>2 hours ago • 23 replies</span>
-        </div>
-        <h5>Best organic pesticides for tomato farming?</h5>
-        <p>I'm looking for effective organic alternatives to chemical pesticides for my tomato greenhouse. Has anyone tried neem oil or other natural solutions?</p>
-        <button class="btn btn-secondary">Reply</button>
-        <button class="btn btn-secondary">👍 15</button>
-      </div>
-
-      <div class="forum-post">
-        <div class="post-header">
-          <span><strong>Peter Kiplimo</strong> posted in <em>Livestock Care</em></span>
-          <span>5 hours ago • 18 replies</span>
-        </div>
-        <h5>Increasing milk production during dry season</h5>
-        <p>My cows' milk production has dropped by 30% this dry season. What feeding strategies and supplements work best to maintain production?</p>
-        <button class="btn btn-secondary">Reply</button>
-        <button class="btn btn-secondary">👍 12</button>
-      </div>
-
-      <div class="forum-post">
-        <div class="post-header">
-          <span><strong>Grace Wambui</strong> posted in <em>Success Stories</em></span>
-          <span>1 day ago • 31 replies</span>
-        </div>
-        <h5>From 1 acre to 10 acres in 3 years! 🎉</h5>
-        <p>Sharing my journey from small-scale to commercial farming using smart techniques I learned here. Revenue grew from KES 50K to 800K annually!</p>
-        <button class="btn btn-secondary">Reply</button>
-        <button class="btn btn-secondary">👍 45</button>
+      <div id="forumPosts">
+        <!-- Dynamic content -->
       </div>
     </div>
   </section>
@@ -1272,21 +1221,23 @@
     <div class="dashboard-grid">
       <div class="card">
         <h4>💰 Available Opportunities</h4>
-        <p>Active Grants: 12<br>Government Programs: 8<br>NGO Funding: 15<br>Microfinance: 25<br>Total Available: KES 2.5M</p>
+        <p>Active Grants: <span id="activeGrants">12</span><br>Government Programs: <span id="govPrograms">8</span><br>NGO Funding: <span id="ngoFunding">15</span><br>Microfinance: <span id="microfinance">25</span><br>Total Available: KES <span id="totalFunding">2.5M</span></p>
       </div>
 
       <div class="card">
         <h4>📊 Your Applications</h4>
-        <p>Submitted: 3<br>Under Review: 2<br>Approved: 1<br>Total Received: KES 85,000</p>
+        <p>Submitted: <span id="appsSubmitted">3</span><br>Under Review: <span id="appsReview">2</span><br>Approved: <span id="appsApproved">1</span><br>Total Received: KES <span id="fundingReceived">85,000</span></p>
         <div class="progress-bar">
-          <div class="progress-fill" style="width: 40%;"></div>
+          <div class="progress-fill" id="fundingProgress" style="width: 40%;"></div>
         </div>
-        <small>40% success rate</small>
+        <small><span id="fundingSuccessRate">40</span>% success rate</small>
       </div>
 
       <div class="card">
         <h4>🎯 Recommended for You</h4>
-        <p>Based on your profile:<br>• Youth Agribusiness Fund<br>• Dairy Development Grant<br>• Climate Smart Agriculture<br>• Women in Agriculture</p>
+        <div id="recommendedFunding">
+          <p>Based on your profile:<br>• Youth Agribusiness Fund<br>• Dairy Development Grant<br>• Climate Smart Agriculture<br>• Women in Agriculture</p>
+        </div>
         <button class="btn">View Recommendations</button>
       </div>
     </div>
@@ -1297,39 +1248,8 @@
         <thead>
           <tr><th>Program</th><th>Amount</th><th>Deadline</th><th>Eligibility</th><th>Status</th><th>Action</th></tr>
         </thead>
-        <tbody>
-          <tr>
-            <td data-label="Program">Youth Agribusiness Loan</td>
-            <td data-label="Amount">Up to KES 500K</td>
-            <td data-label="Deadline">Aug 15, 2025</td>
-            <td data-label="Eligibility">18-35 years</td>
-            <td data-label="Status">Open</td>
-            <td data-label="Action"><button class="btn">Apply Now</button></td>
-          </tr>
-          <tr>
-            <td data-label="Program">Dairy Development Grant</td>
-            <td data-label="Amount">KES 200K</td>
-            <td data-label="Deadline">Sep 1, 2025</td>
-            <td data-label="Eligibility">5+ dairy cows</td>
-            <td data-label="Status">Open</td>
-            <td data-label="Action"><button class="btn">Apply Now</button></td>
-          </tr>
-          <tr>
-            <td data-label="Program">Climate Smart Agriculture</td>
-            <td data-label="Amount">KES 150K</td>
-            <td data-label="Deadline">Aug 30, 2025</td>
-            <td data-label="Eligibility">All farmers</td>
-            <td data-label="Status">Open</td>
-            <td data-label="Action"><button class="btn">Apply Now</button></td>
-          </tr>
-          <tr>
-            <td data-label="Program">Women Empowerment Fund</td>
-            <td data-label="Amount">KES 300K</td>
-            <td data-label="Deadline">Oct 15, 2025</td>
-            <td data-label="Eligibility">Women farmers</td>
-            <td data-label="Status">Opening Soon</td>
-            <td data-label="Action"><button class="btn btn-secondary">Get Notified</button></td>
-          </tr>
+        <tbody id="fundingOpportunities">
+          <!-- Dynamic content -->
         </tbody>
       </table>
     </div>
@@ -1339,7 +1259,7 @@
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
         <div class="input-group">
           <label>Funding Type</label>
-          <select>
+          <select id="fundingType">
             <option>Government Grant</option>
             <option>NGO Funding</option>
             <option>Microfinance Loan</option>
@@ -1348,11 +1268,11 @@
         </div>
         <div class="input-group">
           <label>Amount Needed (KES)</label>
-          <input type="number" placeholder="e.g., 100000">
+          <input type="number" id="fundingAmount" placeholder="e.g., 100000">
         </div>
         <div class="input-group">
           <label>Purpose</label>
-          <select>
+          <select id="fundingPurpose">
             <option>Equipment Purchase</option>
             <option>Crop Production</option>
             <option>Livestock Investment</option>
@@ -1363,60 +1283,231 @@
       </div>
       <div class="input-group">
         <label>Project Description</label>
-        <textarea placeholder="Describe your farming project and how the funding will be used..." rows="3"></textarea>
+        <textarea id="fundingDescription" placeholder="Describe your farming project and how the funding will be used..." rows="3"></textarea>
       </div>
-      <button class="btn">Submit Application</button>
+      <button class="btn" onclick="submitFundingApplication()">Submit Application</button>
     </div>
 
     <div class="card">
       <h4>📈 Financial Planning Tools</h4>
       <div class="dashboard-grid">
         <div class="stat-card">
-          <div class="stat-number">KES 125K</div>
+          <div class="stat-number">KES <span id="finMonthRevenue">125K</span></div>
           <p>Monthly Revenue</p>
         </div>
         <div class="stat-card">
-          <div class="stat-number">KES 45K</div>
+          <div class="stat-number">KES <span id="finMonthExpenses">45K</span></div>
           <p>Monthly Expenses</p>
         </div>
         <div class="stat-card">
-          <div class="stat-number">KES 80K</div>
+          <div class="stat-number">KES <span id="finNetProfit">80K</span></div>
           <p>Net Profit</p>
         </div>
         <div class="stat-card">
-          <div class="stat-number">178%</div>
+          <div class="stat-number"><span id="finROI">178</span>%</div>
           <p>ROI</p>
         </div>
       </div>
-      <button class="btn btn-secondary">Download Financial Report</button>
+      <button class="btn btn-secondary" onclick="downloadFinancialReport()">Download Financial Report</button>
     </div>
   </section>
 </main>
 
+<!-- Modals -->
+<!-- Sell Product Modal -->
+<div class="modal" id="sellModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>📦 Sell Your Products</h3>
+      <button class="modal-close" onclick="closeModal('sellModal')">✖</button>
+    </div>
+    <div class="input-group">
+      <label>Product Type</label>
+      <select id="sellProductType">
+        <option>Maize</option>
+        <option>Tomatoes</option>
+        <option>Milk</option>
+        <option>Eggs</option>
+        <option>Beans</option>
+        <option>Potatoes</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label>Quantity (kg/L)</label>
+      <input type="number" id="sellQuantity" placeholder="Enter quantity">
+    </div>
+    <div class="input-group">
+      <label>Price per unit (KES)</label>
+      <input type="number" id="sellPrice" placeholder="Enter your price">
+    </div>
+    <div class="input-group">
+      <label>Location</label>
+      <input type="text" id="sellLocation" placeholder="Your location">
+    </div>
+    <button class="btn" onclick="listProduct()">List Product</button>
+    <button class="btn btn-danger" onclick="closeModal('sellModal')">Cancel</button>
+  </div>
+</div>
+
+<!-- Vet Visit Modal -->
+<div class="modal" id="vetModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>📅 Schedule Vet Visit</h3>
+      <button class="modal-close" onclick="closeModal('vetModal')">✖</button>
+    </div>
+    <div class="input-group">
+      <label>Animal ID</label>
+      <input type="text" id="vetAnimalID" placeholder="e.g., COW-247">
+    </div>
+    <div class="input-group">
+      <label>Reason for Visit</label>
+      <select id="vetReason">
+        <option>Routine Checkup</option>
+        <option>Vaccination</option>
+        <option>Pregnancy Check</option>
+        <option>Treatment</option>
+        <option>Emergency</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label>Preferred Date</label>
+      <input type="date" id="vetDate">
+    </div>
+    <div class="input-group">
+      <label>Notes</label>
+      <textarea id="vetNotes" rows="3" placeholder="Additional information..."></textarea>
+    </div>
+    <button class="btn" onclick="scheduleVetVisit()">Schedule Visit</button>
+    <button class="btn btn-danger" onclick="closeModal('vetModal')">Cancel</button>
+  </div>
+</div>
+
+<!-- Egg Collection Modal -->
+<div class="modal" id="eggCollectionModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>🐣 Record Egg Collection</h3>
+      <button class="modal-close" onclick="closeModal('eggCollectionModal')">✖</button>
+    </div>
+    <div class="input-group">
+      <label>Number of Eggs Collected</label>
+      <input type="number" id="eggCount" placeholder="Enter number of eggs">
+    </div>
+    <div class="input-group">
+      <label>Collection Date</label>
+      <input type="date" id="eggDate" value="">
+    </div>
+    <div class="input-group">
+      <label>Damaged/Broken Eggs</label>
+      <input type="number" id="eggDamaged" placeholder="0">
+    </div>
+    <button class="btn" onclick="recordEggCollection()">Record Collection</button>
+    <button class="btn btn-danger" onclick="closeModal('eggCollectionModal')">Cancel</button>
+  </div>
+</div>
+
 <footer>
-  <p>&copy;  FarmersKit | Empowering Kenyan Farmers Through Smart Technology</p>
-  <p>Contact: info@farmerskit | Support: +254-700-FARMERS</p>
+  <p>&copy; 2026 FarmersKit | Empowering Kenyan Farmers Through Smart Technology</p>
+  <p>Contact: info@farmerskit.co.ke | Support: +254-700-FARMERS</p>
 </footer>
 
 <script>
-  let currentSection = 'dashboard';
+  // Data Storage
+  let farmData = {
+    user: {
+      name: 'John Doe',
+      location: 'Nairobi',
+      farmSize: 10,
+      reputation: 850
+    },
+    livestock: {
+      total: 25,
+      pregnant: 3,
+      healthScore: 95,
+      dailyMilk: 450,
+      totalBirds: 150,
+      layers: 120,
+      broilers: 30,
+      dailyEggs: 115
+    },
+    crops: [],
+    calendar: [],
+    marketProducts: [],
+    experts: [],
+    forumPosts: [],
+    fundingOpps: [],
+    chatHistory: []
+  };
 
+  // Initialize app
+  document.addEventListener('DOMContentLoaded', function() {
+    initializeApp();
+    loadForecastData();
+    loadMarketProducts();
+    loadCalendarActivities();
+    loadPregnancyTracker();
+    loadExperts();
+    loadForumPosts();
+    loadFundingOpportunities();
+    setTodayDate();
+  });
+
+  function initializeApp() {
+    updateDashboard();
+    startAutoUpdate();
+  }
+
+  function setTodayDate() {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('eggDate').value = today;
+  }
+
+  function updateDashboard() {
+    document.getElementById('userName').textContent = farmData.user.name;
+    document.getElementById('chatUserName').textContent = farmData.user.name.split(' ')[0];
+    document.getElementById('totalAnimals').textContent = farmData.livestock.total;
+    document.getElementById('pregnantCows').textContent = farmData.livestock.pregnant;
+    document.getElementById('healthScore').textContent = farmData.livestock.healthScore;
+  }
+
+  function startAutoUpdate() {
+    // Update weather every 30 seconds
+    setInterval(updateWeather, 30000);
+    // Update market prices every minute
+    setInterval(updateMarketPrices, 60000);
+  }
+
+  function updateWeather() {
+    const temp = 25 + Math.floor(Math.random() * 6);
+    document.getElementById('currentTemp').textContent = temp + '°C';
+    document.getElementById('currentTempDetail').textContent = temp + '°C';
+    document.getElementById('feelsLike').textContent = (temp + 2);
+  }
+
+  function updateMarketPrices() {
+    // Simulate price fluctuations
+    const prices = {
+      maize: 43 + Math.floor(Math.random() * 5),
+      tomatoes: 78 + Math.floor(Math.random() * 8),
+      milk: 58 + Math.floor(Math.random() * 5),
+      eggs: 17 + Math.floor(Math.random() * 3)
+    };
+  }
+
+  // Navigation
   function showSection(sectionId) {
-    // Hide all sections
     document.querySelectorAll('.section').forEach(section => {
       section.classList.remove('active');
     });
     
-    // Show selected section
     document.getElementById(sectionId).classList.add('active');
     
-    // Update navigation
     document.querySelectorAll('.nav-links a').forEach(link => {
       link.classList.remove('active');
     });
     
     event.target.classList.add('active');
-    currentSection = sectionId;
   }
 
   function toggleSidebar() {
@@ -1424,22 +1515,23 @@
     sidebar.classList.toggle('active');
   }
 
+  // Chat functionality
   function sendMessage() {
     const input = document.getElementById('chatInput');
     const messages = document.getElementById('chatMessages');
     
     if (input.value.trim()) {
-      // Add user message
       const userMsg = document.createElement('div');
       userMsg.className = 'message user-message';
-      userMsg.innerHTML = input.value;
+      userMsg.textContent = input.value;
       messages.appendChild(userMsg);
       
-      // Simulate bot response
+      const question = input.value.toLowerCase();
+      
       setTimeout(() => {
         const botMsg = document.createElement('div');
         botMsg.className = 'message bot-message';
-        botMsg.innerHTML = `<strong>FarmBot:</strong> ${getBotResponse(input.value)}`;
+        botMsg.innerHTML = `<strong>FarmBot:</strong> ${getBotResponse(question)}`;
         messages.appendChild(botMsg);
         messages.scrollTop = messages.scrollHeight;
       }, 1000);
@@ -1451,16 +1543,17 @@
 
   function getBotResponse(question) {
     const responses = {
-      'fertilizer': 'For maize, I recommend DAP (18-46-0) at planting and CAN (26-0-0) for topdressing after 6 weeks. Apply 2 bags of DAP per acre at planting.',
-      'sick': 'For sick chickens, isolate them immediately. Common symptoms include lethargy, reduced appetite, and unusual droppings. Contact Dr. Sarah Wanjiku at +254-700-123-456 for immediate consultation.',
-      'tomato': 'Best time to plant tomatoes in Kenya is during the long rains (March-May) or short rains (October-December). Ensure soil temperature is above 16°C.',
-      'pregnancy': 'Signs of cow pregnancy include: missed heat cycles, increased appetite, udder development, and calm behavior. Confirm with a vet check after 60 days.',
-      'default': 'That\'s a great question! Based on your farm profile, I can provide specific advice. For detailed guidance, I recommend consulting with our expert Dr. Sarah Wanjiku or posting in our community forums where experienced farmers share their knowledge.'
+      'fertilizer': 'For maize, I recommend DAP (18-46-0) at planting and CAN (26-0-0) for topdressing after 6 weeks. Apply 2 bags of DAP per acre at planting. The cost is approximately KES 8,400 per acre.',
+      'sick': 'For sick chickens, isolate them immediately. Common symptoms include lethargy, reduced appetite, and unusual droppings. Provide electrolytes and check for Newcastle disease. Contact Dr. Sarah Wanjiku at +254-700-VETHELP for immediate consultation.',
+      'tomato': 'Best time to plant tomatoes in Kenya is during the long rains (March-May) or short rains (October-December). Ensure soil temperature is above 16°C. Use certified seeds and prepare seedbeds 4 weeks before transplanting.',
+      'pregnancy': 'Signs of cow pregnancy include: missed heat cycles (21 days after breeding), increased appetite, udder development starting from 6 months, calm behavior, and weight gain. Confirm with a vet check after 60 days using rectal palpation or ultrasound.',
+      'milk': 'To increase milk production: 1) Provide quality feed with 16-18% protein, 2) Ensure constant access to clean water (80-100L/day), 3) Maintain regular milking schedule, 4) Reduce stress, 5) Use mineral supplements, especially during dry season.',
+      'pest': 'For tomato pest control: Use neem oil spray for aphids and whiteflies. For bacterial wilt, practice crop rotation. Spray copper-based fungicides for early and late blight. Remove and destroy infected plants immediately.',
+      'default': 'That\'s a great question! Based on your farm profile, I can provide specific advice. Let me help you with detailed information. You can also consult with our expert Dr. Sarah Wanjiku or post in our community forums where experienced farmers share their knowledge.'
     };
     
-    const lowerQuestion = question.toLowerCase();
     for (let key in responses) {
-      if (lowerQuestion.includes(key)) {
+      if (question.includes(key)) {
         return responses[key];
       }
     }
@@ -1472,27 +1565,434 @@
     sendMessage();
   }
 
-  function showSellForm() {
-    document.getElementById('sellForm').style.display = 'block';
-  }
+  // Load forecast data
+  function loadForecastData() {
+    const forecastData = [
+      { day: 'Today', weather: 'Partly Cloudy', high: 29, low: 18, rain: '0%', advice: 'Good day for harvesting' },
+      { day: 'Tomorrow', weather: 'Light Rain', high: 26, low: 16, rain: '60%', advice: 'Postpone spraying' },
+      { day: 'Wednesday', weather: 'Sunny', high: 30, low: 19, rain: '10%', advice: 'Perfect for field work' },
+      { day: 'Thursday', weather: 'Partly Cloudy', high: 28, low: 17, rain: '20%', advice: 'Good planting conditions' },
+      { day: 'Friday', weather: 'Heavy Rain', high: 24, low: 15, rain: '85%', advice: 'Stay indoors, check drainage' },
+      { day: 'Saturday', weather: 'Cloudy', high: 26, low: 16, rain: '40%', advice: 'Light work only' },
+      { day: 'Sunday', weather: 'Sunny', high: 29, low: 18, rain: '5%', advice: 'Great for all activities' }
+    ];
 
-  function hideSellForm() {
-    document.getElementById('sellForm').style.display = 'none';
-  }
-
-  // Initialize dashboard
-  document.addEventListener('DOMContentLoaded', function() {
-    showSection('dashboard');
-  });
-
-  // Auto-update weather and prices (simulation)
-  setInterval(function() {
-    const temp = 25 + Math.floor(Math.random() * 6);
-    const weatherElements = document.querySelectorAll('.weather-card div:nth-child(2)');
-    weatherElements.forEach(el => {
-      if (el.style.fontSize) el.textContent = `${temp}°C`;
+    const tbody = document.getElementById('forecastBody');
+    tbody.innerHTML = '';
+    
+    forecastData.forEach(item => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td data-label="Day">${item.day}</td>
+        <td data-label="Weather">${item.weather}</td>
+        <td data-label="High/Low">${item.high}°/${item.low}°</td>
+        <td data-label="Rain">${item.rain}</td>
+        <td data-label="Farming Advice">${item.advice}</td>
+      `;
+      tbody.appendChild(row);
     });
-  }, 30000);
+  }
+
+  // Load market products
+  function loadMarketProducts() {
+    const products = [
+      { product: 'Fertilizer (DAP)', price: 'KES 4,200/bag', quantity: '50 bags', location: 'Kiambu', seller: 'AgriSupply Co.' },
+      { product: 'Maize Seeds', price: 'KES 350/kg', quantity: '100 kg', location: 'Nakuru', seller: 'SeedMaster' },
+      { product: 'Dairy Cow', price: 'KES 85,000', quantity: '3 available', location: 'Meru', seller: 'KiambuFarms' },
+      { product: 'Tractor Rental', price: 'KES 3,500/day', quantity: 'Available', location: 'Nairobi', seller: 'FarmEquip Ltd' },
+      { product: 'Chicken Feed', price: 'KES 2,800/bag', quantity: '100 bags', location: 'Kiambu', seller: 'PoultryMart' }
+    ];
+
+    const tbody = document.getElementById('marketProducts');
+    tbody.innerHTML = '';
+    
+    products.forEach(item => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td data-label="Product">${item.product}</td>
+        <td data-label="Price">${item.price}</td>
+        <td data-label="Quantity">${item.quantity}</td>
+        <td data-label="Location">${item.location}</td>
+        <td data-label="Seller">${item.seller}</td>
+        <td data-label="Action"><button class="btn btn-secondary" onclick="contactSeller('${item.seller}')">Contact</button></td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  // Load calendar activities
+  function loadCalendarActivities() {
+    const activities = [
+      { date: 'Aug 1', crop: 'Maize', activity: 'Apply NPK Fertilizer', field: 'Field A (5 acres)', status: 'Due' },
+      { date: 'Aug 3', crop: 'Tomatoes', activity: 'Weeding & Pruning', field: 'Greenhouse 1', status: 'Due' },
+      { date: 'Aug 5', crop: 'Tomatoes', activity: 'First Harvest', field: 'Greenhouse 1', status: 'Upcoming' },
+      { date: 'Aug 10', crop: 'Beans', activity: 'First Weeding', field: 'Field C', status: 'Scheduled' },
+      { date: 'Aug 15', crop: 'Maize', activity: 'Pest Control Spray', field: 'Field A', status: 'Scheduled' }
+    ];
+
+    const tbody = document.getElementById('calendarActivities');
+    tbody.innerHTML = '';
+    
+    activities.forEach(item => {
+      const row = document.createElement('tr');
+      const btnClass = item.status === 'Due' ? 'btn btn-success' : 'btn btn-secondary';
+      const btnText = item.status === 'Due' ? 'Mark Done' : 'Set Reminder';
+      
+      row.innerHTML = `
+        <td data-label="Date">${item.date}</td>
+        <td data-label="Crop">${item.crop}</td>
+        <td data-label="Activity">${item.activity}</td>
+        <td data-label="Field">${item.field}</td>
+        <td data-label="Status">${item.status}</td>
+        <td data-label="Action"><button class="${btnClass}" onclick="handleActivity('${item.date}', '${item.activity}')">${btnText}</button></td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  // Load pregnancy tracker
+  function loadPregnancyTracker() {
+    const pregnancies = [
+      { id: 'COW-247', breed: 'Friesian', dueDate: 'Sep 15, 2026', daysLeft: 19, stage: 'Third Trimester', status: 'Monitor' },
+      { id: 'COW-189', breed: 'Ayrshire', dueDate: 'Oct 3, 2026', daysLeft: 37, stage: 'Third Trimester', status: 'Healthy' },
+      { id: 'COW-301', breed: 'Jersey', dueDate: 'Nov 12, 2026', daysLeft: 77, stage: 'Second Trimester', status: 'Healthy' }
+    ];
+
+    const tbody = document.getElementById('pregnancyTracker');
+    tbody.innerHTML = '';
+    
+    pregnancies.forEach(item => {
+      const statusColor = item.status === 'Monitor' ? 'orange' : 'green';
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td data-label="Animal ID">${item.id}</td>
+        <td data-label="Breed">${item.breed}</td>
+        <td data-label="Due Date">${item.dueDate}</td>
+        <td data-label="Days Left">${item.daysLeft} days</td>
+        <td data-label="Stage">${item.stage}</td>
+        <td data-label="Status"><span style="color: ${statusColor};">${item.status}</span></td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  // Load experts
+  function loadExperts() {
+    const experts = [
+      { name: 'Dr. Sarah Wanjiku', specialization: 'Veterinarian', location: 'Kiambu (5km)', rating: '⭐⭐⭐⭐⭐', availability: 'Available Today' },
+      { name: 'John Kamau', specialization: 'Crop Specialist', location: 'Nairobi (12km)', rating: '⭐⭐⭐⭐⭐', availability: 'Available Tomorrow' },
+      { name: 'Dr. Michael Ochieng', specialization: 'Soil Expert', location: 'Nakuru (45km)', rating: '⭐⭐⭐⭐', availability: 'Available This Week' },
+      { name: 'Grace Muthoni', specialization: 'Agricultural Officer', location: 'Kiambu (8km)', rating: '⭐⭐⭐⭐⭐', availability: 'Available Today' }
+    ];
+
+    const tbody = document.getElementById('expertsTable');
+    tbody.innerHTML = '';
+    
+    experts.forEach(item => {
+      const btnClass = item.availability.includes('Today') ? 'btn' : 'btn btn-secondary';
+      const btnText = item.availability.includes('Today') ? 'Call Now' : item.availability.includes('Tomorrow') ? 'Book Visit' : 'Schedule';
+      
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td data-label="Name">${item.name}</td>
+        <td data-label="Specialization">${item.specialization}</td>
+        <td data-label="Location">${item.location}</td>
+        <td data-label="Rating">${item.rating}</td>
+        <td data-label="Availability">${item.availability}</td>
+        <td data-label="Contact"><button class="${btnClass}" onclick="contactExpert('${item.name}')">${btnText}</button></td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  // Load forum posts
+  function loadForumPosts() {
+    const posts = [
+      {
+        author: 'Mary Njeri',
+        category: 'Crop Management',
+        time: '2 hours ago',
+        replies: 23,
+        title: 'Best organic pesticides for tomato farming?',
+        content: 'I\'m looking for effective organic alternatives to chemical pesticides for my tomato greenhouse. Has anyone tried neem oil or other natural solutions?',
+        likes: 15
+      },
+      {
+        author: 'Peter Kiplimo',
+        category: 'Livestock Care',
+        time: '5 hours ago',
+        replies: 18,
+        title: 'Increasing milk production during dry season',
+        content: 'My cows\' milk production has dropped by 30% this dry season. What feeding strategies and supplements work best to maintain production?',
+        likes: 12
+      },
+      {
+        author: 'Grace Wambui',
+        category: 'Success Stories',
+        time: '1 day ago',
+        replies: 31,
+        title: 'From 1 acre to 10 acres in 3 years! 🎉',
+        content: 'Sharing my journey from small-scale to commercial farming using smart techniques I learned here. Revenue grew from KES 50K to 800K annually!',
+        likes: 45
+      }
+    ];
+
+    const container = document.getElementById('forumPosts');
+    container.innerHTML = '';
+    
+    posts.forEach(post => {
+      const div = document.createElement('div');
+      div.className = 'forum-post';
+      div.innerHTML = `
+        <div class="post-header">
+          <span><strong>${post.author}</strong> posted in <em>${post.category}</em></span>
+          <span>${post.time} • ${post.replies} replies</span>
+        </div>
+        <h5>${post.title}</h5>
+        <p>${post.content}</p>
+        <button class="btn btn-secondary" onclick="replyToPost('${post.title}')">Reply</button>
+        <button class="btn btn-secondary" onclick="likePost('${post.title}')">👍 ${post.likes}</button>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  // Load funding opportunities
+  function loadFundingOpportunities() {
+    const opportunities = [
+      { program: 'Youth Agribusiness Loan', amount: 'Up to KES 500K', deadline: 'Aug 15, 2026', eligibility: '18-35 years', status: 'Open' },
+      { program: 'Dairy Development Grant', amount: 'KES 200K', deadline: 'Sep 1, 2026', eligibility: '5+ dairy cows', status: 'Open' },
+      { program: 'Climate Smart Agriculture', amount: 'KES 150K', deadline: 'Aug 30, 2026', eligibility: 'All farmers', status: 'Open' },
+      { program: 'Women Empowerment Fund', amount: 'KES 300K', deadline: 'Oct 15, 2026', eligibility: 'Women farmers', status: 'Opening Soon' }
+    ];
+
+    const tbody = document.getElementById('fundingOpportunities');
+    tbody.innerHTML = '';
+    
+    opportunities.forEach(item => {
+      const btnClass = item.status === 'Open' ? 'btn' : 'btn btn-secondary';
+      const btnText = item.status === 'Open' ? 'Apply Now' : 'Get Notified';
+      
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td data-label="Program">${item.program}</td>
+        <td data-label="Amount">${item.amount}</td>
+        <td data-label="Deadline">${item.deadline}</td>
+        <td data-label="Eligibility">${item.eligibility}</td>
+        <td data-label="Status">${item.status}</td>
+        <td data-label="Action"><button class="${btnClass}" onclick="applyForFunding('${item.program}')">${btnText}</button></td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  // Modal functions
+  function openModal(modalId) {
+    document.getElementById(modalId).classList.add('active');
+  }
+
+  function closeModal(modalId) {
+    document.getElementById(modalId).classList.remove('active');
+  }
+
+  // Action functions
+  function listProduct() {
+    const type = document.getElementById('sellProductType').value;
+    const quantity = document.getElementById('sellQuantity').value;
+    const price = document.getElementById('sellPrice').value;
+    const location = document.getElementById('sellLocation').value;
+
+    if (quantity && price && location) {
+      showNotification(`Your ${type} (${quantity} units at KES ${price}/unit) has been listed successfully!`, 'success');
+      closeModal('sellModal');
+      
+      // Clear form
+      document.getElementById('sellQuantity').value = '';
+      document.getElementById('sellPrice').value = '';
+      document.getElementById('sellLocation').value = '';
+    } else {
+      showNotification('Please fill in all fields', 'error');
+    }
+  }
+
+  function addCropActivity() {
+    const crop = document.getElementById('newCropType').value;
+    const activity = document.getElementById('newActivity').value;
+    const date = document.getElementById('newActivityDate').value;
+    const field = document.getElementById('newActivityField').value;
+
+    if (crop && activity && date && field) {
+      showNotification(`Activity added: ${activity} for ${crop} on ${date} at ${field}`, 'success');
+      
+      // Clear form
+      document.getElementById('newActivityDate').value = '';
+      document.getElementById('newActivityField').value = '';
+    } else {
+      showNotification('Please fill in all fields', 'error');
+    }
+  }
+
+  function addNewAnimal() {
+    const type = document.getElementById('newAnimalType').value;
+    const breed = document.getElementById('newAnimalBreed').value;
+    const id = document.getElementById('newAnimalID').value;
+    const dob = document.getElementById('newAnimalDOB').value;
+
+    if (breed && id && dob) {
+      farmData.livestock.total++;
+      document.getElementById('totalAnimals').textContent = farmData.livestock.total;
+      document.getElementById('statTotalAnimals').textContent = farmData.livestock.total;
+      
+      showNotification(`New ${type} (${id}) added successfully!`, 'success');
+      
+      // Clear form
+      document.getElementById('newAnimalBreed').value = '';
+      document.getElementById('newAnimalID').value = '';
+      document.getElementById('newAnimalDOB').value = '';
+    } else {
+      showNotification('Please fill in all fields', 'error');
+    }
+  }
+
+  function scheduleVetVisit() {
+    const animalID = document.getElementById('vetAnimalID').value;
+    const reason = document.getElementById('vetReason').value;
+    const date = document.getElementById('vetDate').value;
+
+    if (animalID && date) {
+      showNotification(`Vet visit scheduled for ${animalID} on ${date}`, 'success');
+      closeModal('vetModal');
+      
+      // Clear form
+      document.getElementById('vetAnimalID').value = '';
+      document.getElementById('vetDate').value = '';
+      document.getElementById('vetNotes').value = '';
+    } else {
+      showNotification('Please fill in required fields', 'error');
+    }
+  }
+
+  function recordEggCollection() {
+    const count = document.getElementById('eggCount').value;
+    const date = document.getElementById('eggDate').value;
+    const damaged = document.getElementById('eggDamaged').value || 0;
+
+    if (count && date) {
+      const netEggs = parseInt(count) - parseInt(damaged);
+      farmData.livestock.dailyEggs = parseInt(count);
+      document.getElementById('dailyEggs').textContent = farmData.livestock.dailyEggs;
+      
+      showNotification(`Recorded ${netEggs} good eggs (${damaged} damaged) for ${date}`, 'success');
+      closeModal('eggCollectionModal');
+      
+      // Clear form
+      document.getElementById('eggCount').value = '';
+      document.getElementById('eggDamaged').value = '';
+    } else {
+      showNotification('Please fill in required fields', 'error');
+    }
+  }
+
+  function createForumPost() {
+    const category = document.getElementById('newForumCategory').value;
+    const title = document.getElementById('newForumTitle').value;
+    const description = document.getElementById('newForumDescription').value;
+
+    if (title && description) {
+      showNotification('Your forum post has been created successfully!', 'success');
+      
+      // Clear form
+      document.getElementById('newForumTitle').value = '';
+      document.getElementById('newForumDescription').value = '';
+    } else {
+      showNotification('Please fill in all fields', 'error');
+    }
+  }
+
+  function submitFundingApplication() {
+    const type = document.getElementById('fundingType').value;
+    const amount = document.getElementById('fundingAmount').value;
+    const purpose = document.getElementById('fundingPurpose').value;
+    const description = document.getElementById('fundingDescription').value;
+
+    if (amount && description) {
+      showNotification(`Funding application for KES ${amount} submitted successfully!`, 'success');
+      
+      // Clear form
+      document.getElementById('fundingAmount').value = '';
+      document.getElementById('fundingDescription').value = '';
+    } else {
+      showNotification('Please fill in all fields', 'error');
+    }
+  }
+
+  function handleActivity(date, activity) {
+    showNotification(`Activity "${activity}" on ${date} has been marked as done!`, 'success');
+  }
+
+  function contactSeller(seller) {
+    showNotification(`Contact request sent to ${seller}. They will reach out to you soon.`, 'success');
+  }
+
+  function contactExpert(expert) {
+    showNotification(`Connecting you with ${expert}...`, 'success');
+  }
+
+  function searchExperts() {
+    const type = document.getElementById('expertType').value;
+    const location = document.getElementById('expertLocation').value;
+    showNotification(`Searching for ${type} in ${location}...`, 'success');
+  }
+
+  function reportEmergency() {
+    if (confirm('Are you sure you want to report an emergency? This will alert nearby experts.')) {
+      showNotification('Emergency reported! Help is on the way. Please stay calm.', 'warning');
+    }
+  }
+
+  function replyToPost(title) {
+    showNotification(`Reply form opened for: ${title}`, 'success');
+  }
+
+  function likePost(title) {
+    showNotification(`You liked the post: ${title}`, 'success');
+  }
+
+  function applyForFunding(program) {
+    showNotification(`Application form for ${program} is being prepared...`, 'success');
+  }
+
+  function downloadFinancialReport() {
+    showNotification('Financial report is being generated. Download will start shortly...', 'success');
+  }
+
+  // Notification system
+  function showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <span style="font-size: 1.5rem;">${type === 'success' ? '✅' : type === 'error' ? '❌' : '⚠️'}</span>
+        <span>${message}</span>
+      </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.style.animation = 'slideInRight 0.3s ease reverse';
+      setTimeout(() => {
+        document.body.removeChild(notification);
+      }, 300);
+    }, 3000);
+  }
+
+  // Close modals when clicking outside
+  window.onclick = function(event) {
+    if (event.target.classList.contains('modal')) {
+      event.target.classList.remove('active');
+    }
+  }
 </script>
 
 </body>
